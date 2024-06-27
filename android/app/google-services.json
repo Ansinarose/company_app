@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "847922315139",
-    "project_id": "companyapp-ff875",
-    "storage_bucket": "companyapp-ff875.appspot.com"
+    "project_number": "1028484626304",
+    "project_id": "alfaaluminiumworks",
+    "storage_bucket": "alfaaluminiumworks.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:847922315139:android:22b3b10b042b76239300b6",
+        "mobilesdk_app_id": "1:1028484626304:android:bfa79ff85785e07688f365",
         "android_client_info": {
           "package_name": "com.example.company_application"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyBuOYv-fGSJnQHwWM2fxxkMsC7m0kONKTE"
+          "current_key": "AIzaSyCz6r_XiPySs3IyAZEDYvmiOIrMg9Z7vRo"
         }
       ],
       "services": {

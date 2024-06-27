@@ -41,48 +41,46 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyCv-Lk8szT0HGWjrhJGIj4eVvey-xloS8s',
-    appId: '1:847922315139:web:3d8b59f1be69be5a9300b6',
-    messagingSenderId: '847922315139',
-    projectId: 'companyapp-ff875',
-    authDomain: 'companyapp-ff875.firebaseapp.com',
-    storageBucket: 'companyapp-ff875.appspot.com',
-    measurementId: 'G-E8MF2P9BET',
+    apiKey: 'AIzaSyDoSyaOfUVxPLKzbstQiVf4wxheIhjr5r0',
+    appId: '1:1028484626304:web:eca4ce2ea43e1e2488f365',
+    messagingSenderId: '1028484626304',
+    projectId: 'alfaaluminiumworks',
+    authDomain: 'alfaaluminiumworks.firebaseapp.com',
+    storageBucket: 'alfaaluminiumworks.appspot.com',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyBuOYv-fGSJnQHwWM2fxxkMsC7m0kONKTE',
-    appId: '1:847922315139:android:22b3b10b042b76239300b6',
-    messagingSenderId: '847922315139',
-    projectId: 'companyapp-ff875',
-    storageBucket: 'companyapp-ff875.appspot.com',
+    apiKey: 'AIzaSyCz6r_XiPySs3IyAZEDYvmiOIrMg9Z7vRo',
+    appId: '1:1028484626304:android:bfa79ff85785e07688f365',
+    messagingSenderId: '1028484626304',
+    projectId: 'alfaaluminiumworks',
+    storageBucket: 'alfaaluminiumworks.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyDzg52Vdx9iqvIYASOPrYvRLViSd6FHQ_c',
-    appId: '1:847922315139:ios:d45664de05530e639300b6',
-    messagingSenderId: '847922315139',
-    projectId: 'companyapp-ff875',
-    storageBucket: 'companyapp-ff875.appspot.com',
+    apiKey: 'AIzaSyB6NybMuv7MC-zL9o6mwoS-899IfuFaq9c',
+    appId: '1:1028484626304:ios:0a7fee03ab4e0c5288f365',
+    messagingSenderId: '1028484626304',
+    projectId: 'alfaaluminiumworks',
+    storageBucket: 'alfaaluminiumworks.appspot.com',
     iosBundleId: 'com.example.companyApplication',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyDzg52Vdx9iqvIYASOPrYvRLViSd6FHQ_c',
-    appId: '1:847922315139:ios:d45664de05530e639300b6',
-    messagingSenderId: '847922315139',
-    projectId: 'companyapp-ff875',
-    storageBucket: 'companyapp-ff875.appspot.com',
+    apiKey: 'AIzaSyB6NybMuv7MC-zL9o6mwoS-899IfuFaq9c',
+    appId: '1:1028484626304:ios:0a7fee03ab4e0c5288f365',
+    messagingSenderId: '1028484626304',
+    projectId: 'alfaaluminiumworks',
+    storageBucket: 'alfaaluminiumworks.appspot.com',
     iosBundleId: 'com.example.companyApplication',
   );
 
   static const FirebaseOptions windows = FirebaseOptions(
-    apiKey: 'AIzaSyCv-Lk8szT0HGWjrhJGIj4eVvey-xloS8s',
-    appId: '1:847922315139:web:31fb708638a30d759300b6',
-    messagingSenderId: '847922315139',
-    projectId: 'companyapp-ff875',
-    authDomain: 'companyapp-ff875.firebaseapp.com',
-    storageBucket: 'companyapp-ff875.appspot.com',
-    measurementId: 'G-F2CN86TY16',
+    apiKey: 'AIzaSyDoSyaOfUVxPLKzbstQiVf4wxheIhjr5r0',
+    appId: '1:1028484626304:web:ce62d274ee03435688f365',
+    messagingSenderId: '1028484626304',
+    projectId: 'alfaaluminiumworks',
+    authDomain: 'alfaaluminiumworks.firebaseapp.com',
+    storageBucket: 'alfaaluminiumworks.appspot.com',
   );
 }

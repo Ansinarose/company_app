@@ -1,11 +1,10 @@
 
-
-import 'package:company_application/common/widgets/bottom_nav_bar.dart';
-import 'package:company_application/features/onboarding/views/carousel_page.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:company_application/features/services/views/add_services.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:curved_navigation_bar/curved_navigation_bar.dart';
+import 'package:company_application/features/services/model/service_model.dart';
+import 'package:company_application/common/widgets/bottom_nav_bar.dart';
 import 'package:company_application/common/constants/app_colors.dart';
 import 'package:company_application/features/auth/models/user_model.dart';
 import 'package:company_application/common/widgets/person_slider.dart';
@@ -18,21 +17,26 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-
-  List<String> services = [];
   int _selectedIndex = 0;
 
-  void _addService(String service) {
-    setState(() {
-      services.add(service);
-    });
+  void _addService(String name, String imageUrl) {
+    // This function is not needed when using StreamBuilder, as the UI updates automatically
   }
 
   void _onNavItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
     });
-    // Handle navigation based on the selected index
+  }
+
+  void _navigateToAddService() {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => AddServicePage(
+          onAddService: _addService,
+        ),
+      ),
+    );
   }
 
   @override
@@ -71,88 +75,110 @@ class _HomeScreenState extends State<HomeScreen> {
               SizedBox(height: screenHeight * 0.03),
               Text('Services:', style: AppTextStyles.subheading(context)),
               SizedBox(height: screenHeight * 0.02),
-              GridView.builder(
-                shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 3,
-                  crossAxisSpacing: 8.0,
-                  mainAxisSpacing: 8.0,
-                  childAspectRatio: 1 / 1.2, // Aspect ratio to fit the size
-                ),
-                itemCount: services.length + 1,
-                itemBuilder: (context, index) {
-                  if (index == services.length) {
-                    return GestureDetector(
-                      onTap: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => AddServicePage(onAddService: _addService),
-                        ));
-                      },
-                      child: Container(
-                        width: screenWidth * 0.28,
-                        height: screenHeight * 0.1,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(10),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey.withOpacity(0.8),
-                              spreadRadius: 1,
-                              blurRadius: 3,
-                              offset: Offset(0, 2),
-                            ),
-                          ],
-                        ),
-                        child: Center(
-                          child: Icon(Icons.add, size: 30, color: Colors.grey),
-                        ),
-                      ),
-                    );
+              StreamBuilder<QuerySnapshot>(
+                stream: FirebaseFirestore.instance.collection('Companyservices').snapshots(),
+                builder: (context, snapshot) {
+                  if (!snapshot.hasData) {
+                    return Center(child: CircularProgressIndicator());
                   }
-                  return Container(
-                    width: screenWidth * 0.28, // Set explicit width
-                    height: screenHeight * 0.15, // Set explicit height
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(10),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.8),
-                          spreadRadius: 1,
-                          blurRadius: 3,
-                          offset: Offset(0, 2),
-                        ),
-                      ],
+
+                  List<Service> services = snapshot.data!.docs
+                      .map((doc) => Service.fromMap(doc.data() as Map<String, dynamic>))
+                      .toList();
+
+                  return GridView.builder(
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 3,
+                      crossAxisSpacing: 14.0,
+                      mainAxisSpacing: 14.0,
+                      childAspectRatio: 1 / 1.2,
                     ),
-                    child: Stack(
-                      children: [
-                        Center(
-                          child: Text(
-                            services[index],
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                            ),
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                        Positioned(
-                          top: 15,
-                          left: 15,
-                          right: 15,
+                    itemCount: services.length + 1, // Add one more item for the "Add More Services" container
+                    itemBuilder: (context, index) {
+                      if (index == services.length) {
+                        return GestureDetector(
+                          onTap: _navigateToAddService,
                           child: Container(
-                            width: 20,
-                            height: 80,
+                            width: screenWidth * 0.28,
+                            height: screenHeight * 1,
                             decoration: BoxDecoration(
-                              color: Colors.blue,
-                              borderRadius: BorderRadius.circular(5),
+                              color: Color.fromARGB(255, 2, 107, 6),
+                              borderRadius: BorderRadius.circular(15),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey.withOpacity(0.8),
+                                  spreadRadius: 1,
+                                  blurRadius: 3,
+                                  offset: Offset(0, 2),
+                                ),
+                              ],
                             ),
-                            
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(Icons.add, color: Colors.white, size: 40),
+                                SizedBox(height: 10),
+                                Text(
+                                  'Add More Services',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
+                        );
+                      } else {
+                        return Container(
+                          width: screenWidth * 0.28,
+                          height: screenHeight * 1,
+                          decoration: BoxDecoration(
+                            color: Color.fromARGB(255, 2, 107, 6),
+                            borderRadius: BorderRadius.circular(15),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withOpacity(0.8),
+                                spreadRadius: 1,
+                                blurRadius: 3,
+                                offset: Offset(0, 2),
+                              ),
+                            ],
+                          ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              SizedBox(height: 10),
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(15),
+                                child: Image.network(
+                                  services[index].imageUrl,
+                                  width: screenWidth * 0.2,
+                                  height: screenHeight * 0.1,
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(
+                                  services[index].name,
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                            ],
+                          ),
+                        );
+                      }
+                    },
                   );
                 },
               ),
@@ -160,7 +186,6 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
       ),
-    
       bottomNavigationBar: CurvedNavBar(
         selectedIndex: _selectedIndex,
         onTap: _onNavItemTapped,
