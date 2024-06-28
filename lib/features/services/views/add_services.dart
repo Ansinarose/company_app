@@ -1,6 +1,4 @@
-
 import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:company_application/features/home/views/home_screen.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -107,7 +105,7 @@ class _AddServicePageState extends State<AddServicePage> {
               SizedBox(height: 30),
               TextButton(
                 onPressed: _submitService,
-          
+                
                 child: Text('SUBMIT'),
                 
                 style: AppButtonStyles.largeButton(context),
@@ -119,3 +117,4 @@ class _AddServicePageState extends State<AddServicePage> {
     );
   }
 }
+
