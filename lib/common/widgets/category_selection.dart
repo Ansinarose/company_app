@@ -1,13 +1,18 @@
 // ignore_for_file: unnecessary_null_comparison
 
+import 'package:company_application/common/constants/app_colors.dart';
 import 'package:company_application/common/constants/app_text_styles.dart';
 import 'package:flutter/material.dart';
-
 
 class CategorySelectionWidget extends StatefulWidget {
   final TextEditingController controller;
 
-  const CategorySelectionWidget({Key? key, required this.controller, required List<String> selectedCategories, required Null Function(dynamic categories) onSelectedCategories}) : super(key: key);
+  const CategorySelectionWidget({
+    Key? key,
+    required this.controller,
+    required List<String> selectedCategories,
+    required Null Function(dynamic categories) onSelectedCategories,
+  }) : super(key: key);
 
   @override
   _CategorySelectionWidgetState createState() => _CategorySelectionWidgetState();
@@ -39,7 +44,7 @@ class _CategorySelectionWidgetState extends State<CategorySelectionWidget> {
     'Custom Furniture Designs',
     'Stair Railings',
     'Staircase Fabrication',
-   'Custom Stair Designs',
+    'Custom Stair Designs',
   ];
 
   List<String> selectedCategories = [];
@@ -104,6 +109,7 @@ class _CategorySelectionWidgetState extends State<CategorySelectionWidget> {
     if (selectedItems != null) {
       setState(() {
         selectedCategories = selectedItems;
+        widget.controller.text = selectedItems.join(', ');
       });
     }
   }
@@ -115,19 +121,52 @@ class _CategorySelectionWidgetState extends State<CategorySelectionWidget> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        TextFormField(
-          controller: widget.controller,
-          readOnly: true,
-          onTap: _showCategoryDialog,
-          decoration: InputDecoration(
-            labelText: 'Categories',
-            suffixIcon: Icon(Icons.arrow_drop_down),
-            border: OutlineInputBorder(),
+        Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(15),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.5),
+                spreadRadius: 2,
+                blurRadius: 5,
+                offset: Offset(0, 3), // changes position of shadow
+              ),
+            ],
+          ),
+          child: TextFormField(
+            controller: widget.controller,
+            readOnly: true,
+            onTap: _showCategoryDialog,
+            decoration: InputDecoration(
+              labelText: 'Categories',
+              labelStyle: TextStyle(color: AppColors.textPrimaryColor),
+              filled: true,
+              fillColor: Colors.white,
+              prefixIcon: Icon(Icons.category),
+              suffixIcon: Icon(Icons.arrow_drop_down),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(15), // Set border radius
+                borderSide: BorderSide.none, // Remove outline
+              ),
+            ),
           ),
         ),
         SizedBox(height: 10),
         Container(
           height: mediaQuery.size.height * 0.2, // Adjust the height based on screen size
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(15),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.5),
+                spreadRadius: 2,
+                blurRadius: 5,
+                offset: Offset(0, 3), // changes position of shadow
+              ),
+            ],
+          ),
           child: ListView.builder(
             itemCount: selectedCategories.length,
             itemBuilder: (context, index) {

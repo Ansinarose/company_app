@@ -1,3 +1,4 @@
+import 'package:company_application/common/constants/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class ExperienceSelectionWidget extends StatefulWidget {
@@ -77,29 +78,36 @@ class _ExperienceSelectionWidgetState extends State<ExperienceSelectionWidget> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        TextFormField(
-          controller: widget.controller,
-          readOnly: true,
-          onTap: _showExperienceDialog,
-          decoration: InputDecoration(
-            labelText: 'Experience Level',
-            suffixIcon: Icon(Icons.arrow_drop_down),
-            border: OutlineInputBorder(),
+        Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(15),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.5),
+                spreadRadius: 2,
+                blurRadius: 5,
+                offset: Offset(0, 3),
+              ),
+            ],
+          ),
+          child: TextFormField(
+            controller: widget.controller,
+            readOnly: true,
+            onTap: _showExperienceDialog,
+            decoration: InputDecoration(
+              labelText: 'Experience Level',
+              labelStyle: TextStyle(color: AppColors.textPrimaryColor), // Change label text color
+              filled: true, // Add filled property
+              fillColor: Colors.white, // Set background color
+              prefixIcon: Icon(Icons.timeline),
+              suffixIcon: Icon(Icons.arrow_drop_down,color: AppColors.textPrimaryColor,),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(15), // Set border radius
+                borderSide: BorderSide.none, // Remove outline
+              ),
+            ),
           ),
         ),
-        // if (selectedExperience != null)
-        //   ListTile(
-        //     title: Text(selectedExperience!),
-        //     trailing: IconButton(
-        //       icon: Icon(Icons.cancel),
-        //       onPressed: () {
-        //         setState(() {
-        //           selectedExperience = null;
-        //           widget.controller.clear();
-        //         });
-        //       },
-        //     ),
-        //   ),
       ],
     );
   }
