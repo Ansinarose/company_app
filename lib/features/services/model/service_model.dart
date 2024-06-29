@@ -1,4 +1,6 @@
 
+// ignore_for_file: unnecessary_cast
+
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:company_application/common/constants/app_colors.dart';

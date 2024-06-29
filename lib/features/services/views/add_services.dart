@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:company_application/features/home/views/home_screen.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -9,7 +8,7 @@ import 'package:company_application/common/constants/app_colors.dart';
 import 'package:company_application/common/constants/app_text_styles.dart';
 import 'package:company_application/common/constants/textform_field.dart';
 import 'package:company_application/common/widgets/curved_appbar.dart';
-import 'package:company_application/common/widgets/photo_selection.dart';
+
 
 class AddServicePage extends StatefulWidget {
   final Function(String, String) onAddService;

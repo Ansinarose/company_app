@@ -1,9 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:company_application/features/category/views/category_view.dart';
 import 'package:company_application/features/services/model/service.dart';
 import 'package:company_application/features/services/views/add_services.dart';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:company_application/features/services/model/service_model.dart';
 import 'package:company_application/common/widgets/bottom_nav_bar.dart';
 import 'package:company_application/common/constants/app_colors.dart';
 import 'package:company_application/features/auth/models/user_model.dart';
@@ -41,11 +42,12 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void _navigateToServiceDetail(Service service) {
     // Implement navigation to the service detail page
-    // Navigator.of(context).push(
-    //   MaterialPageRoute(
-    //     builder: (context) => ServiceDetailPage(service: service),
-    //   ),
-    // );
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => CategoryViewScreen (
+          service: service),
+      ),
+    );
   }
 
   Future<void> _deleteService(String serviceId) async {
