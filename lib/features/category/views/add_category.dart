@@ -1,6 +1,7 @@
 
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:company_application/features/services/model/service.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -15,7 +16,9 @@ import 'package:company_application/providers/category_provider.dart';
 import 'package:company_application/providers/worker_provider.dart';
 
 class CategoryAddScreen extends StatefulWidget {
-  const CategoryAddScreen({Key? key}) : super(key: key);
+  final Service service;
+
+  const CategoryAddScreen({Key? key, required this.service}) : super(key: key);
 
   @override
   State<CategoryAddScreen> createState() => _CategoryAddScreenState();
@@ -56,10 +59,11 @@ class _CategoryAddScreenState extends State<CategoryAddScreen> {
         }
 
         // Store category details in Firestore
-        DocumentReference categoryDoc = await FirebaseFirestore.instance.collection('CompanyServices').add({
+        DocumentReference categoryDoc = await FirebaseFirestore.instance.collection('Companycategory').add({
           'name': categoryProvider.categoryName,
           'imageUrl': categoryImageUrl,
           'additionalImages': additionalCategoryImagesUrls,
+          'serviceId': widget.service.id, // Save serviceId
         });
 
         // Store worker details in Firestore
@@ -69,13 +73,14 @@ class _CategoryAddScreenState extends State<CategoryAddScreen> {
             workerImageUrl = await _uploadImage(worker.image!, 'workers/${DateTime.now().millisecondsSinceEpoch}.jpg');
           }
 
-          await categoryDoc.collection('CompanyServices').add({
+          await categoryDoc.collection('workers').add({
             'name': worker.nameController.text,
             'location': worker.locationController.text,
             'experience': worker.experienceController.text,
             'contact': worker.contactController.text,
             'categories': worker.categories,
             'imageUrl': workerImageUrl,
+            'categoryId': categoryDoc.id,
           });
         }
 

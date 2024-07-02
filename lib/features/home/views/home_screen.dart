@@ -1,8 +1,8 @@
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:company_application/features/category/views/category_view.dart';
 import 'package:company_application/features/services/model/service.dart';
 import 'package:company_application/features/services/views/add_services.dart';
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:company_application/common/widgets/bottom_nav_bar.dart';
@@ -44,8 +44,7 @@ class _HomeScreenState extends State<HomeScreen> {
     // Implement navigation to the service detail page
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (context) => CategoryViewScreen (
-          service: service),
+        builder: (context) => CategoryViewScreen(service: service),
       ),
     );
   }
@@ -54,15 +53,18 @@ class _HomeScreenState extends State<HomeScreen> {
     try {
       await FirebaseFirestore.instance.collection('Companyservices').doc(serviceId).delete();
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(backgroundColor: AppColors.textPrimaryColor,
-          content: Text('Service deleted successfully.',style: AppTextStyles.whiteBody(context),)),
+        SnackBar(
+          backgroundColor: AppColors.textPrimaryColor,
+          content: Text('Service deleted successfully.', style: AppTextStyles.whiteBody(context)),
+        ),
       );
     } catch (e) {
       print('Error deleting service: $e');
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(backgroundColor: AppColors.textPrimaryColor,
-          content: Text('Error deleting service. Please try again.',
-          style: AppTextStyles.whiteBody(context),)),
+        SnackBar(
+          backgroundColor: AppColors.textPrimaryColor,
+          content: Text('Error deleting service. Please try again.', style: AppTextStyles.whiteBody(context)),
+        ),
       );
     }
   }
@@ -71,19 +73,19 @@ class _HomeScreenState extends State<HomeScreen> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text('Delete Service',style: AppTextStyles.heading(context),),
-        content: Text('Are you sure you want to delete ${service.name}?',style: AppTextStyles.body(context),),
+        title: Text('Delete Service', style: AppTextStyles.heading(context)),
+        content: Text('Are you sure you want to delete ${service.name}?', style: AppTextStyles.body(context)),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: Text('Cancel',style: AppTextStyles.body(context),),
+            child: Text('Cancel', style: AppTextStyles.body(context)),
           ),
           TextButton(
             onPressed: () {
               Navigator.of(context).pop();
               _deleteService(service.id);
             },
-            child: Text('Delete',style: AppTextStyles.body(context),),
+            child: Text('Delete', style: AppTextStyles.body(context)),
           ),
         ],
       ),

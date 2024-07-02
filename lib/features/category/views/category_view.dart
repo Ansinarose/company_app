@@ -1,23 +1,24 @@
 
-
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:company_application/common/constants/app_colors.dart';
 import 'package:company_application/features/category/views/add_category.dart';
 import 'package:company_application/features/home/views/home_screen.dart';
 import 'package:company_application/features/services/model/service.dart';
 import 'package:flutter/material.dart';
 
+import '../../../common/constants/app_colors.dart';
+
 class CategoryViewScreen extends StatelessWidget {
-  const CategoryViewScreen({Key? key, required Service service}) : super(key: key);
+  final Service service;
+
+  const CategoryViewScreen({Key? key, required this.service}) : super(key: key);
 
   Future<List<Map<String, dynamic>>> _fetchCategories() async {
-    try {
-      QuerySnapshot snapshot = await FirebaseFirestore.instance.collection('CompanyServices').get();
-      return snapshot.docs.map((doc) => doc.data() as Map<String, dynamic>).toList();
-    } catch (e) {
-      print('Error fetching categories: $e');
-      return [];
-    }
+    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+        .collection('Companycategory')
+        .where('serviceId', isEqualTo: service.id) // Filter by serviceId
+        .get();
+    
+    return querySnapshot.docs.map((doc) => doc.data() as Map<String, dynamic>).toList();
   }
 
   @override
@@ -26,50 +27,54 @@ class CategoryViewScreen extends StatelessWidget {
       backgroundColor: AppColors.scaffoldBackgroundcolor,
       appBar: AppBar(
         backgroundColor: AppColors.textPrimaryColor,
-        title: Text('Categories'),
+        title: Text(service.name),
       ),
       body: FutureBuilder<List<Map<String, dynamic>>>(
         future: _fetchCategories(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasError) {
-            return Center(child: Text('Error: ${snapshot.error}'));
-          } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return Center(child: Text('No categories found.'));
-          } else {
-            List<Map<String, dynamic>> categories = snapshot.data!;
-            return ListView.builder(
-              itemCount: categories.length,
-              itemBuilder: (context, index) {
-                return ListTile(
-                  title: Text(
-                    categories[index]['name'] ?? 'No Name',
-                    style: TextStyle(
-                      color: AppColors.textPrimaryColor,
-                      fontSize: 18.0,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  tileColor: Colors.white,
-                  contentPadding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10.0),
-                  ),
-                  onTap: () {
-                    // Handle category tap if needed
-                  },
-                );
-              },
-            );
           }
+          if (snapshot.hasError) {
+            return Center(child: Text('Error fetching categories.'));
+          }
+          if (!snapshot.hasData || snapshot.data!.isEmpty) {
+            return Center(child: Text('No categories available.'));
+          }
+
+          List<Map<String, dynamic>> categories = snapshot.data!;
+          return ListView.builder(
+            itemCount: categories.length,
+            itemBuilder: (context, index) {
+              final category = categories[index];
+              return ListTile(
+                title: Text(category['name']),
+                // leading: category['imageUrl'] != null
+                //     ? Image.network(category['imageUrl'])
+                //     : null,
+              );
+            },
+          );
         },
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      // floatingActionButton: FloatingActionButton(
+      //   backgroundColor: AppColors.textPrimaryColor,
+      //   onPressed: () {
+      //     Navigator.push(
+      //       context,
+      //       MaterialPageRoute(
+      //         builder: (context) => CategoryAddScreen(service: service),
+      //       ),
+      //     );
+      //   },
+      //   child: Icon(Icons.add),
+      // ),
+
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
         backgroundColor: AppColors.textPrimaryColor,
         onPressed: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => CategoryAddScreen()));
+          Navigator.push(context, MaterialPageRoute(builder: (context) => CategoryAddScreen(service: service)));
         },
         tooltip: 'Add Category',
         child: Icon(Icons.add, color: Colors.white),
@@ -99,5 +104,6 @@ class CategoryViewScreen extends StatelessWidget {
         ),
       ),
     );
+    
   }
 }
