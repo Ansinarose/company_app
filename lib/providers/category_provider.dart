@@ -1,44 +1,5 @@
 
-// import 'dart:io';
-
-// import 'package:flutter/material.dart';
-
-// class CategoryProvider with ChangeNotifier {
-//   String categoryName = '';
-//   File? categoryImage;
-//   List<File> additionalCategoryImages = [];
-
-//   void setCategoryName(String name) {
-//     categoryName = name;
-//     notifyListeners();
-//   }
-
-//   void setCategoryImage(File image) {
-//     categoryImage = image;
-//     notifyListeners();
-//   }
-
-//   void addAdditionalCategoryImage(File image) {
-//     additionalCategoryImages.add(image);
-//     notifyListeners();
-//   }
-
-//   void removeAdditionalCategoryImage(int index) {
-//     if (index >= 0 && index < additionalCategoryImages.length) {
-//       additionalCategoryImages.removeAt(index);
-//       notifyListeners();
-//     }
-//   }
-
-//   void clearCategory() {
-//     categoryName = '';
-//     categoryImage = null;
-//     additionalCategoryImages.clear();
-//     notifyListeners();
-//   }
-// }
 import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
@@ -47,6 +8,7 @@ class CategoryProvider with ChangeNotifier {
   File? categoryImage;
   List<File> additionalCategoryImages = [];
   List<DocumentSnapshot> _categories = [];
+  Stream<List<DocumentSnapshot>>? _categoriesStream;
 
   List<DocumentSnapshot> get categories => _categories;
 
@@ -79,13 +41,21 @@ class CategoryProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> fetchCategories(String serviceId) async {
-    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+  void fetchCategories(String serviceId) {
+    _categoriesStream = FirebaseFirestore.instance
         .collection('Companycategory')
         .where('serviceId', isEqualTo: serviceId)
-        .get();
+        .snapshots()
+        .map((snapshot) => snapshot.docs);
 
-    _categories = querySnapshot.docs;
+    _categoriesStream?.listen((List<DocumentSnapshot> documents) {
+      _categories = documents;
+      notifyListeners();
+    });
+  }
+
+  void addCategory(DocumentSnapshot category) {
+    _categories.add(category);
     notifyListeners();
   }
 

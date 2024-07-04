@@ -1,4 +1,5 @@
 
+
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:company_application/features/services/model/service.dart';
@@ -83,12 +84,16 @@ class _CategoryAddScreenState extends State<CategoryAddScreen> {
             'categoryId': categoryDoc.id,
           });
         }
-
+        
+  // Fetch the new category document and update the local state
+        DocumentSnapshot newCategory = await categoryDoc.get();
+        Provider.of<CategoryProvider>(context, listen: false).addCategory(newCategory);
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Data successfully saved.'),
           ),
         );
+        Navigator.pop(context);
       } catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -370,6 +375,7 @@ class _CategoryAddScreenState extends State<CategoryAddScreen> {
               TextButton(
                 style: AppButtonStyles.largeButton(context),
                 onPressed: _submitData,
+                
                 child: Text('SUBMIT'),
               ),
             ],
