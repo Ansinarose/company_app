@@ -45,7 +45,7 @@ final _formKey = GlobalKey<FormState>();
                         }
                         
                         return null;
-                      },
+                      }, onChanged: (value) {  },
                     ),
                     SizedBox(height: 20,),
                     CustomTextFormField(
@@ -61,7 +61,7 @@ final _formKey = GlobalKey<FormState>();
                           return 'Password must be at least 6 characters long';
                         }
                         return null;
-                      },
+                      }, onChanged: (value) {  },
                     ),
                     SizedBox(height: 50,),
                     Center(

@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 
 // import 'package:company_application/common/constants/app_colors.dart';
 // import 'package:flutter/material.dart';
@@ -83,8 +84,9 @@
 //     );
 //   }
 // }
-import 'package:company_application/common/constants/app_colors.dart';
 import 'package:flutter/material.dart';
+
+import 'package:company_application/common/constants/app_colors.dart';
 
 class CustomTextFormField extends StatefulWidget {
   final String labelText;
@@ -101,7 +103,7 @@ class CustomTextFormField extends StatefulWidget {
     this.obscureText = false,
     required this.prefixIcon,
     this.validator,
-    this.onChanged, // Optional onChanged callback
+    this.onChanged,
   }) : super(key: key);
 
   @override
@@ -139,7 +141,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
       child: TextFormField(
         controller: widget.controller,
         obscureText: _isObscured,
-        onChanged: widget.onChanged, // Assign onChanged callback
+        //onChanged: widget.onChanged, // Assign onChanged callback
         decoration: InputDecoration(
           labelText: widget.labelText,
           labelStyle: TextStyle(color: labelColor),

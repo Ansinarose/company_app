@@ -92,7 +92,7 @@ class _AddServicePageState extends State<AddServicePage> {
               CustomTextFormField(
                 labelText: 'Service Name',
                 controller: _serviceController,
-                prefixIcon: Icons.design_services_sharp,
+                prefixIcon: Icons.design_services_sharp, onChanged: (value) {  },
               ),
               SizedBox(height: 30),
               GestureDetector(
