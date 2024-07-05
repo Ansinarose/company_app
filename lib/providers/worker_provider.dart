@@ -30,4 +30,9 @@ class WorkerProvider with ChangeNotifier {
     workers = [WorkerInfo()];
     notifyListeners();
   }
+  void clearState() {
+  workers.clear();
+  addWorker(); // Add one empty worker
+  notifyListeners();
+}
 }

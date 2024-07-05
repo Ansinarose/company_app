@@ -1,6 +1,6 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:company_application/features/category/views/category_view.dart';
+import 'package:company_application/features/category/views/view_category.dart';
 import 'package:company_application/features/services/model/service.dart';
 import 'package:company_application/features/services/views/add_services.dart';
 import 'package:flutter/material.dart';
