@@ -1,7 +1,9 @@
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:company_application/common/constants/app_colors.dart';
 import 'package:company_application/common/constants/textform_field.dart';
 import 'package:company_application/features/photos/model/imageFormModel.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
@@ -235,19 +237,47 @@ class ImageFormScreen extends StatelessWidget {
     );
   }
 
-  void _submitForm(BuildContext context, ImageFormModel model) {
-    if (model.formKey.currentState!.validate()) {
-      // Here you can use the data from the model to submit the form
-      print('Title: ${model.titleController.text}');
-      print('Description: ${model.descriptionController.text}');
-      print('Price: ${model.priceController.text}');
-      print('Overview: ${model.overviewController.text}');
-      print('Selected Colors: ${model.selectedColors}');
-      print('Estimated Completion: ${model.estimatedCompletion}');
-      print('Additional Images: ${model.additionalImages.length}');
+  Future<void> _submitForm(BuildContext context, ImageFormModel model) async {
+   {
+    try {
+      // 1. Upload images to Firebase Storage
+      List<String> imageUrls = await _uploadImages(model.additionalImages);
 
-      // Navigate back or to a success screen
+      // 2. Create a map of the form data
+      Map<String, dynamic> formData = {
+        'title': model.titleController.text,
+        'description': model.descriptionController.text,
+        'price': model.priceController.text,
+        'overview': model.overviewController.text,
+        'selectedColors': model.selectedColors,
+        'estimatedCompletion': model.estimatedCompletion,
+        'imageUrls': imageUrls,
+      };
+
+      // 3. Add the data to Firestore
+      await FirebaseFirestore.instance.collection('categorydetails').add(formData);
+
+      // 4. Show success message and navigate back
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Form submitted successfully')));
       Navigator.pop(context);
+    } catch (e) {
+      // Handle any errors
+      print('Error submitting form: $e');
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Error submitting form')));
     }
   }
+}
+
+Future<List<String>> _uploadImages(List<File> images) async {
+  List<String> imageUrls = [];
+  for (File image in images) {
+    String fileName = DateTime.now().millisecondsSinceEpoch.toString();
+    Reference ref = FirebaseStorage.instance.ref().child('category_detailed_image/$fileName');
+    UploadTask uploadTask = ref.putFile(image);
+    TaskSnapshot taskSnapshot = await uploadTask;
+    String downloadUrl = await taskSnapshot.ref.getDownloadURL();
+    imageUrls.add(downloadUrl);
+  }
+  return imageUrls;
+}
 }
