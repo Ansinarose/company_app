@@ -1,6 +1,7 @@
 import 'package:company_application/features/auth/views/login_screen.dart';
 import 'package:company_application/features/home/views/home_screen.dart';
 import 'package:company_application/features/onboarding/views/carousel_page.dart';
+import 'package:company_application/features/photos/model/imageFormModel.dart';
 import 'package:company_application/features/splash/views/splash_screen.dart';
 import 'package:company_application/providers/category_provider.dart';
 import 'package:company_application/providers/worker_provider.dart';
@@ -21,6 +22,7 @@ void main() async{
         ChangeNotifierProvider(create: (context) => User()),
         ChangeNotifierProvider(create: (_) => CategoryProvider()),
         ChangeNotifierProvider(create: (_) => WorkerProvider()),
+        ChangeNotifierProvider(create: (context) => ImageFormModel()),
       ],
       child: MyApp(),
     ),

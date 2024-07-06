@@ -1,8 +1,9 @@
 // ignore_for_file: unused_import
 
-import 'dart:html';
+//import 'dart:html';
 
-import 'package:company_application/features/photos/category_photo.dart';
+
+import 'package:company_application/features/photos/views/category_image.dart';
 import 'package:company_application/features/workers/worker_list.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -22,7 +23,7 @@ class CategoryDetailPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 2,
+      length: 3,
       child: Scaffold(
         backgroundColor: AppColors.scaffoldBackgroundcolor,
         appBar: AppBar(
@@ -31,13 +32,17 @@ class CategoryDetailPage extends StatelessWidget {
           bottom: TabBar(
             tabs: [
               Tab(text: 'Total Workers'),
+               Tab(text: 'Available workers'),
               Tab(text: 'Photos'),
+             
             ],
           ),
         ),
         body: TabBarView(
           children: [
             WorkersListView(categoryId: categoryId),
+            
+            Center(child: Text('available worker session',style: AppTextStyles.body(context),),),
             CategoryPhotosView(categoryId: categoryId),
           ],
         ),
