@@ -13,11 +13,13 @@ import 'package:provider/provider.dart';
 
 class ImageFormScreen extends StatelessWidget {
   final String imageUrl;
-
+  
   ImageFormScreen({
     Key? key,
     required this.imageUrl,
   }) : super(key: key);
+  
+ 
 
   @override
   Widget build(BuildContext context) {
@@ -256,7 +258,9 @@ class ImageFormScreen extends StatelessWidget {
 
       // 3. Add the data to Firestore
       await FirebaseFirestore.instance.collection('categorydetails').add(formData);
-
+//  await FirebaseFirestore.instance.collection('Companycategory').doc(categoryId).update({
+//         'processedImages': FieldValue.arrayUnion([imageUrl])
+//       });
       // 4. Show success message and navigate back
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Form submitted successfully')));
       Navigator.pop(context);

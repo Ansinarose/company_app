@@ -42,6 +42,7 @@ class MyApp extends StatelessWidget {
           '/carousel': (context) => CarouselPage(),
           '/login': (context) => LoginPage(),
           '/home': (context) => HomeScreen(),
+          
         },
     );
   }

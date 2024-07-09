@@ -28,7 +28,7 @@ class CategoryAddScreen extends StatefulWidget {
 
 class _CategoryAddScreenState extends State<CategoryAddScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
+  
   @override
   void initState() {
     super.initState();

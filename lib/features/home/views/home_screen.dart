@@ -1,6 +1,7 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:company_application/features/category/views/view_category.dart';
+import 'package:company_application/features/notification/views/notification_screen.dart';
 import 'package:company_application/features/services/model/service.dart';
 import 'package:company_application/features/services/views/add_services.dart';
 import 'package:flutter/material.dart';
@@ -111,7 +112,9 @@ class _HomeScreenState extends State<HomeScreen> {
             },
           ),
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) => NotificationScreen()));
+            },
             icon: Icon(Icons.notification_important, color: AppColors.textsecondaryColor),
           ),
         ],

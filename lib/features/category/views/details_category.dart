@@ -30,6 +30,9 @@ class CategoryDetailPage extends StatelessWidget {
           backgroundColor: AppColors.textPrimaryColor,
           title: Text(categoryName, style: AppTextStyles.body(context)),
           bottom: TabBar(
+            labelColor: Colors.white,
+            unselectedLabelColor: Color.fromARGB(255, 141, 140, 140),
+            indicatorColor: Colors.white,
             tabs: [
               Tab(text: 'Total Workers'),
                Tab(text: 'Available workers'),
