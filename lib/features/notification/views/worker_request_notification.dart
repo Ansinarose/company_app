@@ -1,16 +1,20 @@
 
-import 'package:company_application/features/notification/views/worker_details.dart';
+import 'package:company_application/common/constants/app_text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
+import 'package:company_application/features/notification/views/worker_details.dart';
 
+class WorkerRequestList extends StatefulWidget {
+  @override
+  State<WorkerRequestList> createState() => _WorkerRequestListState();
+}
 
-
-class WorkerRequestList extends StatelessWidget {
+class _WorkerRequestListState extends State<WorkerRequestList> {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
-      stream: FirebaseFirestore.instance.collection('worker_request').snapshots(),
+      stream: FirebaseFirestore.instance.collection('workers_request').snapshots(),
       builder: (context, snapshot) {
         if (snapshot.hasError) {
           print('Error: ${snapshot.error}');
@@ -34,7 +38,7 @@ class WorkerRequestList extends StatelessWidget {
             Map<String, dynamic> data = document.data() as Map<String, dynamic>;
 
             print('Document data: $data');
-
+            String workerId = document.id;
             String name = data['name'] ?? 'Unknown';
             String email = data['email'] ?? 'Unknown';
             String phoneNumber = data['phoneNumber'] ?? 'Unknown';
@@ -42,54 +46,102 @@ class WorkerRequestList extends StatelessWidget {
             String dob = data['dob'] ?? 'Unknown';
             String category = data['category'] ?? 'Unknown';
             String experience = data['experience'] ?? 'Unknown';
-            String photoUrl = data['photo'] ?? '';
-           
-            return Column(
-              children: [
-                ListTile(onTap: () {
-                  Navigator.of(context).push(MaterialPageRoute(builder: (context) => WorkerDetailsScreen(
-                    name: name, 
-                  email: email, 
-                  phoneNumber: phoneNumber,
-                   address: address,
-                    dob: dob, 
-                  category: category,
-                   experience: experience,
-                    photoUrl: photoUrl,
-                    
-                  )));
-                },
-                  leading: CircleAvatar(
-                    backgroundImage: photoUrl.isNotEmpty
-                        ? NetworkImage(photoUrl)
-                        : AssetImage('assets/images/th (35).jpeg') as ImageProvider,
-                    onBackgroundImageError: (exception, stackTrace) {
-                      print('Error loading image: $exception');
+            String photoUrl = data['photoUrl'] ?? '';
+            String idProofUrl = data['idProofUrl'] ?? '';
+            String certificationUrl = data['certificationUrl'] ?? '';
+            String resumeUrl = data['resumeUrl'] ?? '';
+
+            return Dismissible(
+              key: Key(workerId),
+              direction: DismissDirection.endToStart,
+              background: Container(
+                color: Colors.red,
+                alignment: Alignment.centerRight,
+                padding: EdgeInsets.only(right: 20.0),
+                child: Icon(Icons.delete, color: Colors.white),
+              ),
+              confirmDismiss: (direction) async {
+                return await showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: Text('Confirm Deletion',style: AppTextStyles.subheading(context),),
+                      content: Text('Are you sure you want to delete $name\'s request?',style: AppTextStyles.body(context),),
+                      actions: <Widget>[
+                        TextButton(
+                          onPressed: () => Navigator.of(context).pop(false),
+                          child: Text('CANCEL',style: AppTextStyles.body(context),),
+                        ),
+                        TextButton(
+                          onPressed: () => Navigator.of(context).pop(true),
+                          child: Text('DELETE',style: AppTextStyles.body(context),),
+                        ),
+                      ],
+                    );
+                  },
+                );
+              },
+              onDismissed: (direction) {
+                _deleteWorkerRequest(workerId);
+              },
+              child: Column(
+                children: [
+                  ListTile(
+                    onTap: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => WorkerDetailsScreen(
+                          name: name,
+                          email: email,
+                          phoneNumber: phoneNumber,
+                          address: address,
+                          dob: dob,
+                          category: category,
+                          experience: experience,
+                          photoUrl: photoUrl,
+                          idProofUrl: idProofUrl,
+                          certificationUrl: certificationUrl,
+                          resumeUrl: resumeUrl,
+                          workerId: workerId,
+                        ),
+                      ));
                     },
-                    radius: 25,
+                    leading: CircleAvatar(
+                      backgroundImage: photoUrl.isNotEmpty
+                          ? NetworkImage(photoUrl) as ImageProvider<Object>
+                          : AssetImage('assets/images/default_avatar.jpg') as ImageProvider<Object>,
+                      radius: 25,
+                    ),
+                    title: Text(
+                        'Worker request: $name has requested to join category: $category on ${DateFormat('yyyy-MM-dd').format(DateTime.now())}'),
+                    trailing: Icon(Icons.arrow_forward_ios),
                   ),
-                  title: Text('Worker request: $name has requested to join categories : ${category} on ${DateFormat('yyyy-mm-dd').format(DateTime.now())} '),
-                  // subtitle: Text(
-                  //   'Email: $email\n'
-                  //   'Phone: $phoneNumber\n'
-                  //   'Address: $address\n'
-                  //   'DOB: $dob\n'
-                  //   'Category: $category\n'
-                  //   'Experience: $experience\n'
-                  //   'Request Date: ${DateFormat('yyyy-MM-dd').format(DateTime.now())}'
-                  // ),
-                 // isThreeLine: true,
-                 trailing: Icon(Icons.arrow_forward_ios),
-                 
-                ),
-                Divider(
-                   thickness: 2,
-                ),
-              ],
+                  Divider(thickness: 2),
+                ],
+              ),
             );
           }).toList(),
         );
       },
     );
+  }
+
+  Future<void> _deleteWorkerRequest(String workerId) async {
+    try {
+      await FirebaseFirestore.instance.collection('workers_request').doc(workerId).delete();
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          backgroundColor: Colors.green,
+          content: Text('Worker request deleted successfully.'),
+        ),
+      );
+    } catch (e) {
+      print('Error deleting worker request: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          backgroundColor: Colors.red,
+          content: Text('Failed to delete worker request. Please try again.'),
+        ),
+      );
+    }
   }
 }

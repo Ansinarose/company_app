@@ -28,14 +28,22 @@ class CategoryAddScreen extends StatefulWidget {
 
 class _CategoryAddScreenState extends State<CategoryAddScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  
+  late TextEditingController _categoryNameController;
+
   @override
   void initState() {
     super.initState();
+    _categoryNameController = TextEditingController();
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Provider.of<CategoryProvider>(context, listen: false).clearState();
       Provider.of<WorkerProvider>(context, listen: false).clearState();
     });
+  }
+   @override
+  void dispose() {
+    _categoryNameController.dispose();
+    super.dispose();
   }
 
   @override
@@ -62,20 +70,20 @@ class _CategoryAddScreenState extends State<CategoryAddScreen> {
                       ),
                       SizedBox(height: 16.0),
                       CustomTextFormField(
-                        labelText: 'Category Name',
-                        controller: TextEditingController(text: categoryProvider.categoryName),
-                        prefixIcon: Icons.category,
-                        onChanged: (value) {
-                          categoryProvider.setCategoryName(value);
-                          _formKey.currentState?.validate();
-                        },
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter a category name';
-                          }
-                          return null;
-                        },
-                      ),
+  labelText: 'Category Name',
+  controller: _categoryNameController,
+  prefixIcon: Icons.category,
+  onChanged: (value) {
+    Provider.of<CategoryProvider>(context, listen: false).setCategoryName(value);
+    _formKey.currentState?.validate();
+  },
+  validator: (value) {
+    if (value == null || value.isEmpty) {
+      return 'Please enter a category name';
+    }
+    return null;
+  },
+),
                       SizedBox(height: 16.0),
                       Text(
                         'Add Category Image',
@@ -383,7 +391,8 @@ class _CategoryAddScreenState extends State<CategoryAddScreen> {
 
         // Store category details in Firestore
         DocumentReference categoryDoc = await FirebaseFirestore.instance.collection('Companycategory').add({
-          'name': categoryProvider.categoryName,
+         // 'name': categoryProvider.categoryName,
+           'name': _categoryNameController.text,       
           'imageUrl': categoryImageUrl,
           'additionalImages': additionalCategoryImagesUrls,
           'serviceId': widget.service.id,

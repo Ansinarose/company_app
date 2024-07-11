@@ -41,6 +41,7 @@ class _HorizontalSliderState extends State<HorizontalSlider> {
               _buildSliderCard('Completed Works'),
               _buildSliderCard('Recent Payments'),
               _buildSliderCard('New Worker Alert'),
+              _buildSliderCard('Total Workers'),
             ],
           ),
         ),

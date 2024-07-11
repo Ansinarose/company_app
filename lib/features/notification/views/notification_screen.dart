@@ -18,8 +18,10 @@ class NotificationScreen extends StatelessWidget {
         appBar: AppBar(
           backgroundColor: AppColors.textPrimaryColor,
           bottom: TabBar(
+            labelColor: Colors.white,
+            unselectedLabelColor: Colors.grey,
             tabs: [
-              Tab(text: 'New Orders'),
+              Tab(text: 'New Orders',),
               Tab(text: 'Worker Request'),
             ],
           ),

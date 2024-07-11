@@ -102,6 +102,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       backgroundColor: AppColors.scaffoldBackgroundcolor,
       appBar: AppBar(
+        automaticallyImplyLeading: true,
         backgroundColor: AppColors.textPrimaryColor,
         actions: [
           IconButton(
