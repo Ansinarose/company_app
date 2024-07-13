@@ -6,12 +6,15 @@ import 'package:flutter/material.dart';
 
 class CategorySelectionWidget extends StatefulWidget {
   final TextEditingController controller;
+  final List<String> selectedCategories;
+  final Function(List<String>) onSelectedCategories;
 
   const CategorySelectionWidget({
     Key? key,
     required this.controller,
-    required List<String> selectedCategories,
-    required Null Function(dynamic categories) onSelectedCategories,
+   
+    required this.selectedCategories,
+     required this.onSelectedCategories,
   }) : super(key: key);
 
   @override
@@ -49,6 +52,11 @@ class _CategorySelectionWidgetState extends State<CategorySelectionWidget> {
 
   List<String> selectedCategories = [];
 
+@override
+void initState() {
+  super.initState();
+  selectedCategories = List.from(widget.selectedCategories);
+}
   void _showCategoryDialog() async {
     final List<String> selectedItems = await showDialog(
       context: context,
@@ -107,12 +115,15 @@ class _CategorySelectionWidgetState extends State<CategorySelectionWidget> {
     );
 
     if (selectedItems != null) {
-      setState(() {
-        selectedCategories = selectedItems;
-        widget.controller.text = selectedItems.join(', ');
-      });
-    }
+    setState(() {
+      selectedCategories = selectedItems;
+      widget.controller.text = selectedItems.join(', ');
+      widget.onSelectedCategories(selectedItems); // Call the callback
+    });
   }
+}
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -178,6 +189,8 @@ class _CategorySelectionWidgetState extends State<CategorySelectionWidget> {
                   onPressed: () {
                     setState(() {
                       selectedCategories.removeAt(index);
+                      widget.controller.text = selectedCategories.join(', ');
+      widget.onSelectedCategories(selectedCategories); // Call the callback
                     });
                   },
                 ),

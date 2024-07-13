@@ -1,7 +1,16 @@
 
+
 // import 'dart:io';
 // import 'package:cloud_firestore/cloud_firestore.dart';
 // import 'package:flutter/material.dart';
+
+// class CategoryImageSet {
+//   File? categoryImage;
+//   List<File> additionalCategoryImages = [];
+
+//   CategoryImageSet({this.categoryImage, List<File>? additionalCategoryImages})
+//       : additionalCategoryImages = additionalCategoryImages ?? [];
+// }
 
 // class CategoryProvider with ChangeNotifier {
 //   String categoryName = '';
@@ -80,16 +89,33 @@
 //   additionalCategoryImages.clear();
 //   notifyListeners();
 // }
+//  bool _isSubmitting = false;
+//   bool get isSubmitting => _isSubmitting;
+
+//   void setSubmitting(bool value) {
+//     _isSubmitting = value;
+//     notifyListeners();
+//   }
 // }
+
 
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:company_application/features/photos/model/imageFormModel.dart';
 import 'package:flutter/material.dart';
+
+class CategoryImageSet {
+  File? categoryImage;
+  List<File> additionalCategoryImages = [];
+
+  CategoryImageSet({this.categoryImage, List<File>? additionalCategoryImages})
+      : additionalCategoryImages = additionalCategoryImages ?? [];
+}
 
 class CategoryProvider with ChangeNotifier {
   String categoryName = '';
-  File? categoryImage;
-  List<File> additionalCategoryImages = [];
+  List<CategoryImageSet> categorySets = [CategoryImageSet()];
+  //List<File> additionalCategoryImages = [];
   List<DocumentSnapshot> _categories = [];
   Stream<List<DocumentSnapshot>>? _categoriesStream;
 
@@ -100,27 +126,33 @@ class CategoryProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void setCategoryImage(File image) {
-    categoryImage = image;
+
+  void addCategoryImageSet() {
+    categorySets.add(CategoryImageSet());
+    notifyListeners();
+  }
+ 
+ void setCategoryImage(File image, int index) {
+    categorySets[index].categoryImage = image;
+    notifyListeners();
+  }
+  void addAdditionalCategoryImage(File image,int index) {
+    categorySets[index].additionalCategoryImages.add(image);
     notifyListeners();
   }
 
-  void addAdditionalCategoryImage(File image) {
-    additionalCategoryImages.add(image);
-    notifyListeners();
-  }
-
-  void removeAdditionalCategoryImage(int index) {
-    if (index >= 0 && index < additionalCategoryImages.length) {
-      additionalCategoryImages.removeAt(index);
+ void removeAdditionalCategoryImage(int setIndex, int imageIndex) {
+    if (setIndex >= 0 && setIndex < categorySets.length &&
+        imageIndex >= 0 && imageIndex < categorySets[setIndex].additionalCategoryImages.length) {
+      categorySets[setIndex].additionalCategoryImages.removeAt(imageIndex);
       notifyListeners();
     }
   }
 
   void clearCategory() {
     categoryName = '';
-    categoryImage = null;
-    additionalCategoryImages.clear();
+    categorySets = [CategoryImageSet()];
+  
     notifyListeners();
   }
 
@@ -159,8 +191,7 @@ class CategoryProvider with ChangeNotifier {
   }
   void clearState() {
   categoryName = '';
-  categoryImage = null;
-  additionalCategoryImages.clear();
+  categorySets = [CategoryImageSet()];
   notifyListeners();
 }
  bool _isSubmitting = false;
@@ -169,5 +200,21 @@ class CategoryProvider with ChangeNotifier {
   void setSubmitting(bool value) {
     _isSubmitting = value;
     notifyListeners();
+  }
+  
+}
+class CategoryFormSet {
+  final TextEditingController titleController = TextEditingController();
+  final TextEditingController descriptionController = TextEditingController();
+  final TextEditingController priceController = TextEditingController();
+  final TextEditingController overviewController = TextEditingController();
+  final ImageFormModel imageFormModel = ImageFormModel();
+
+  void dispose() {
+    titleController.dispose();
+    descriptionController.dispose();
+    priceController.dispose();
+    overviewController.dispose();
+    imageFormModel.dispose();
   }
 }

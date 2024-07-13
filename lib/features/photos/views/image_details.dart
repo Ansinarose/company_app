@@ -13,10 +13,10 @@ import 'package:provider/provider.dart';
 
 class ImageFormScreen extends StatelessWidget {
   final String imageUrl;
-  
+  final String categoryId;
   ImageFormScreen({
     Key? key,
-    required this.imageUrl,
+    required this.imageUrl, required this.categoryId,
   }) : super(key: key);
   
  
@@ -53,6 +53,7 @@ class ImageFormScreen extends StatelessWidget {
                   SizedBox(height: 8.0),
                   _buildAdditionalImagesSection(context, model),
                   SizedBox(height: 16.0),
+                  
                   CustomTextFormField(
                     labelText: 'Title',
                     controller: model.titleController,
