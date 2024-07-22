@@ -1,7 +1,6 @@
-// ignore_for_file: unused_local_variable, unnecessary_import
-
 import 'package:company_application/common/constants/app_colors.dart';
 import 'package:company_application/common/constants/app_text_styles.dart';
+import 'package:company_application/features/workers/available_worker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
@@ -36,12 +35,30 @@ class _HorizontalSliderState extends State<HorizontalSlider> {
           child: PageView(
             controller: _pageController,
             children: [
-              _buildSliderCard('New Order'),
-              _buildSliderCard('Ongoing Project'),
-              _buildSliderCard('Completed Works'),
-              _buildSliderCard('Recent Payments'),
-              _buildSliderCard('New Worker Alert'),
-              _buildSliderCard('Total Workers'),
+              _buildSliderCard('New Order', () {
+                // Handle on tap for 'New Order'
+                print('New Order tapped');
+              }),
+              _buildSliderCard('Ongoing Project', () {
+                // Handle on tap for 'Ongoing Project'
+                print('Ongoing Project tapped');
+              }),
+              _buildSliderCard('Completed Works', () {
+                // Handle on tap for 'Completed Works'
+                print('Completed Works tapped');
+              }),
+              _buildSliderCard('Recent Payments', () {
+                // Handle on tap for 'Recent Payments'
+                print('Recent Payments tapped');
+              }),
+              _buildSliderCard('New Worker Alert', () {
+                // Handle on tap for 'New Worker Alert'
+                print('New Worker Alert tapped');
+              }),
+              _buildSliderCard('Total Available Workers', () {
+                Navigator.of(context).push(MaterialPageRoute(builder: (context)=> AvailableWorkerScreen()));
+                print('Total Available Workers tapped');
+              }),
             ],
           ),
         ),
@@ -49,7 +66,7 @@ class _HorizontalSliderState extends State<HorizontalSlider> {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: List.generate(
-            5,
+            6, // Change to 6 to match the number of cards
             (index) => _buildDotIndicator(index),
           ),
         ),
@@ -57,11 +74,9 @@ class _HorizontalSliderState extends State<HorizontalSlider> {
     );
   }
 
-  Widget _buildSliderCard(String title) {
+  Widget _buildSliderCard(String title, VoidCallback onTap) {
     return GestureDetector(
-      onTap: () {
-        // Handle card tap
-      },
+      onTap: onTap,
       child: Container(
         margin: EdgeInsets.symmetric(horizontal: 10),
         padding: EdgeInsets.all(16),
@@ -80,12 +95,11 @@ class _HorizontalSliderState extends State<HorizontalSlider> {
         child: Center(
           child: Text(
             title,
-            style: AppTextStyles.subheading(context)
-            ),
+            style: AppTextStyles.subheading(context),
           ),
         ),
-      );
-    
+      ),
+    );
   }
 
   Widget _buildDotIndicator(int index) {
@@ -99,13 +113,14 @@ class _HorizontalSliderState extends State<HorizontalSlider> {
         return Padding(
           padding: const EdgeInsets.only(top: 20.0),
           child: Container(
-            
             width: 8.0,
             height: 8.0,
             margin: EdgeInsets.symmetric(horizontal: 4.0),
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: selectedness < 0.5 ? AppColors.textPrimaryColor : Colors.grey,
+              color: selectedness < 0.5
+                  ? AppColors.textPrimaryColor
+                  : Colors.grey,
             ),
           ),
         );

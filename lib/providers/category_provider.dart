@@ -208,7 +208,8 @@ class CategoryFormSet {
   final TextEditingController descriptionController = TextEditingController();
   final TextEditingController priceController = TextEditingController();
   final TextEditingController overviewController = TextEditingController();
-  final ImageFormModel imageFormModel = ImageFormModel();
+  final ImageFormModel imageFormModel;
+  CategoryFormSet() : imageFormModel = ImageFormModel();
 
   void dispose() {
     titleController.dispose();

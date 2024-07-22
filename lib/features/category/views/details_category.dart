@@ -60,11 +60,15 @@ class CategoryDetailPage extends StatefulWidget {
         return DefaultTabController(
           length: 2,
           child: Scaffold(
+            backgroundColor: AppColors.scaffoldBackgroundcolor,
             appBar: AppBar(
-              title: Text(widget.categoryName),
-              bottom: TabBar(
+              backgroundColor: AppColors.textPrimaryColor,
+              title: Text(widget.categoryName,style: TextStyle(color: Colors.white),),
+              bottom: TabBar(labelStyle: TextStyle(color: Colors.white),
+              indicatorColor: Colors.white,
                 tabs: [
-                  Tab(text: 'Photos'),
+                  Tab(
+                    text: 'Photos'),
                   Tab(text: 'Total Workers'),
                 ],
               ),
@@ -129,9 +133,13 @@ class CategoryDetailPage extends StatefulWidget {
                           MaterialPageRoute(builder: (context)=> WorkerDetailPage(worker: worker)));
 
                       },
+                      
                     );
+                    
                   },
+                  
                 ),
+                
               ],
             ),
           ),

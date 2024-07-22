@@ -43,7 +43,7 @@ class _CategoryAddScreenState extends State<CategoryAddScreen> {
 
   @override
   void dispose() {
-    _categoryNameController.dispose();
+   // _categoryNameController.dispose();
     for (var formSet in categoryFormSets) {
       formSet.dispose();
     }
@@ -174,109 +174,116 @@ class _CategoryAddScreenState extends State<CategoryAddScreen> {
   }
 
   Widget _buildCategoryFormSet(CategoryProvider categoryProvider, int index, CategoryFormSet formSet) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        Text(
-          'Category Image Set ${index + 1}',
-          style: AppTextStyles.subheading(context),
-        ),
-        SizedBox(height: 16.0),
-        Text(
-          'Add Category Image',
-          style: AppTextStyles.subheading(context),
-        ),
-        SizedBox(height: 8.0),
-        GestureDetector(
-          onTap: () => _selectCategoryImage(index),
-          child: Container(
-            height: 200,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(20.0),
-            ),
-            alignment: Alignment.center,
-            child: _buildImagePreview(categoryProvider.categorySets[index].categoryImage),
+    return ChangeNotifierProvider.value(
+      value: formSet.imageFormModel,
+      
+      child: Consumer<ImageFormModel>(
+        builder: (context, model, _){
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Text(
+            'Category Image Set ${index + 1}',
+            style: AppTextStyles.subheading(context),
           ),
-        ),
-        SizedBox(height: 16.0),
-        Text(
-          'Add Images from Different Angles',
-          style: AppTextStyles.subheading(context),
-        ),
-        SizedBox(height: 8.0),
-        GestureDetector(
-          onTap: () => _selectAdditionalCategoryImages(index),
-          child: Container(
-            height: 130,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(20.0),
-            ),
-            alignment: Alignment.center,
-            child: categoryProvider.categorySets[index].additionalCategoryImages.isEmpty
-                ? Icon(Icons.camera_alt, size: 50, color: AppColors.textPrimaryColor)
-                : _buildAdditionalImagesPreview(categoryProvider.categorySets[index].additionalCategoryImages, index),
+          SizedBox(height: 16.0),
+          Text(
+            'Add Category Image',
+            style: AppTextStyles.subheading(context),
           ),
-        ),
-        SizedBox(height: 16.0),
-        CustomTextFormField(
-          labelText: 'Title',
-          controller: formSet.titleController,
-          prefixIcon: Icons.title,
-          validator: (value) => value?.isEmpty ?? true ? 'Please enter a title' : null,
-        ),
-        SizedBox(height: 16.0),
-        CustomTextFormField(
-          labelText: 'Description',
-          controller: formSet.descriptionController,
-          prefixIcon: Icons.description,
-          validator: (value) => value?.isEmpty ?? true ? 'Please enter a description' : null,
-        ),
-        SizedBox(height: 16.0),
-        CustomTextFormField(
-          labelText: 'Price',
-          controller: formSet.priceController,
-          prefixIcon: Icons.attach_money,
-          validator: (value) => value?.isEmpty ?? true ? 'Please enter a price' : null,
-        ),
-        SizedBox(height: 16.0),
-        CustomTextFormField(
-          labelText: 'Overview',
-          controller: formSet.overviewController,
-          prefixIcon: Icons.info_outline,
-          validator: (value) => value?.isEmpty ?? true ? 'Please enter an overview' : null,
-        ),
-        SizedBox(height: 16.0),
-        Text(
-          'Available Colors',
-          style: AppTextStyles.subheading(context),
-        ),
-        SizedBox(height: 16.0),
-        _buildColorsSection(context, formSet.imageFormModel),
-        Text(
-          'Estimated Work Completion',
-          style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
-        ),
-        SizedBox(height: 15.0),
-        ElevatedButton(
-          onPressed: () => _showEstimatedCompletionDialog(context, formSet.imageFormModel),
-          child: Text(
-            formSet.imageFormModel.estimatedCompletion.isEmpty
-                ? 'Select Estimated Completion'
-                : formSet.imageFormModel.estimatedCompletion,
-            style: TextStyle(color: AppColors.textPrimaryColor),
-          ),
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.white,
-            padding: EdgeInsets.symmetric(vertical: 16.0),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12.0),
+          SizedBox(height: 8.0),
+          GestureDetector(
+            onTap: () => _selectCategoryImage(index),
+            child: Container(
+              height: 200,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(20.0),
+              ),
+              alignment: Alignment.center,
+              child: _buildImagePreview(categoryProvider.categorySets[index].categoryImage),
             ),
           ),
-        ),
-        SizedBox(height: 32.0),
-      ],
+          SizedBox(height: 16.0),
+          Text(
+            'Add Images from Different Angles',
+            style: AppTextStyles.subheading(context),
+          ),
+          SizedBox(height: 8.0),
+          GestureDetector(
+            onTap: () => _selectAdditionalCategoryImages(index),
+            child: Container(
+              height: 130,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(20.0),
+              ),
+              alignment: Alignment.center,
+              child: categoryProvider.categorySets[index].additionalCategoryImages.isEmpty
+                  ? Icon(Icons.camera_alt, size: 50, color: AppColors.textPrimaryColor)
+                  : _buildAdditionalImagesPreview(categoryProvider.categorySets[index].additionalCategoryImages, index),
+            ),
+          ),
+          SizedBox(height: 16.0),
+          CustomTextFormField(
+            labelText: 'Title',
+            controller: formSet.titleController,
+            prefixIcon: Icons.title,
+            validator: (value) => value?.isEmpty ?? true ? 'Please enter a title' : null,
+          ),
+          SizedBox(height: 16.0),
+          CustomTextFormField(
+            labelText: 'Description',
+            controller: formSet.descriptionController,
+            prefixIcon: Icons.description,
+            validator: (value) => value?.isEmpty ?? true ? 'Please enter a description' : null,
+          ),
+          SizedBox(height: 16.0),
+          CustomTextFormField(
+            labelText: 'Price',
+            controller: formSet.priceController,
+            prefixIcon: Icons.attach_money,
+            validator: (value) => value?.isEmpty ?? true ? 'Please enter a price' : null,
+          ),
+          SizedBox(height: 16.0),
+          CustomTextFormField(
+            labelText: 'Overview',
+            controller: formSet.overviewController,
+            prefixIcon: Icons.info_outline,
+            validator: (value) => value?.isEmpty ?? true ? 'Please enter an overview' : null,
+          ),
+          SizedBox(height: 16.0),
+          Text(
+            'Available Colors',
+            style: AppTextStyles.subheading(context),
+          ),
+          SizedBox(height: 16.0),
+          _buildColorsSection(context, formSet.imageFormModel),
+          Text(
+            'Estimated Work Completion',
+            style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
+          ),
+          SizedBox(height: 15.0),
+          ElevatedButton(
+            onPressed: () => _showEstimatedCompletionDialog(context, formSet.imageFormModel),
+            child: Text(
+              formSet.imageFormModel.estimatedCompletion.isEmpty
+                  ? 'Select Estimated Completion'
+                  : formSet.imageFormModel.estimatedCompletion,
+              style: TextStyle(color: AppColors.textPrimaryColor),
+            ),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.white,
+              padding: EdgeInsets.symmetric(vertical: 16.0),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12.0),
+              ),
+            ),
+          ),
+          SizedBox(height: 32.0),
+        ],
+       );
+   } ),
     );
   }
 
@@ -470,6 +477,7 @@ void _selectAdditionalCategoryImages(int index) async {
       for (int i = 0; i < categoryFormSets.length; i++) {
         CategoryFormSet formSet = categoryFormSets[i];
         CategoryImageSet imageSet = categoryProvider.categorySets[i];
+        ImageFormModel model = formSet.imageFormModel;
 
         String categoryImageUrl = '';
         if (imageSet.categoryImage != null) {
@@ -487,7 +495,7 @@ void _selectAdditionalCategoryImages(int index) async {
           'description': formSet.descriptionController.text,
           'price': formSet.priceController.text,
           'overview': formSet.overviewController.text,
-          'colors': formSet.imageFormModel.selectedColors,
+          'colors': model.selectedColors,
           'estimatedCompletion': formSet.imageFormModel.estimatedCompletion,
           'imageUrl': categoryImageUrl,
           'additionalImages': additionalCategoryImagesUrls,

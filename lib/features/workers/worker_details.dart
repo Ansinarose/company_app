@@ -1,3 +1,4 @@
+import 'package:company_application/common/constants/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class WorkerDetailPage extends StatefulWidget {
@@ -15,8 +16,10 @@ class _WorkerDetailPageState extends State<WorkerDetailPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.scaffoldBackgroundcolor,
       appBar: AppBar(
-        title: Text('Worker Details'),
+        backgroundColor: AppColors.textPrimaryColor,
+       // title: Text('Worker Details'),
         actions: [
           IconButton(
             icon: Icon(isFavorite ? Icons.favorite : Icons.favorite_border),
