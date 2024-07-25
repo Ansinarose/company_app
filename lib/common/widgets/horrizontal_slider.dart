@@ -1,5 +1,6 @@
 import 'package:company_application/common/constants/app_colors.dart';
 import 'package:company_application/common/constants/app_text_styles.dart';
+import 'package:company_application/features/notification/views/order_request.dart';
 import 'package:company_application/features/workers/available_worker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -36,7 +37,7 @@ class _HorizontalSliderState extends State<HorizontalSlider> {
             controller: _pageController,
             children: [
               _buildSliderCard('New Order', () {
-                // Handle on tap for 'New Order'
+              // Navigator.of(context).push(MaterialPageRoute(builder: (context)=> NewOrdersList()));
                 print('New Order tapped');
               }),
               _buildSliderCard('Ongoing Project', () {
@@ -56,7 +57,7 @@ class _HorizontalSliderState extends State<HorizontalSlider> {
                 print('New Worker Alert tapped');
               }),
               _buildSliderCard('Total Available Workers', () {
-                Navigator.of(context).push(MaterialPageRoute(builder: (context)=> AvailableWorkerScreen()));
+                Navigator.of(context).push(MaterialPageRoute(builder: (context)=> AvailableWorkerScreen(orderDetails: {},)));
                 print('Total Available Workers tapped');
               }),
             ],

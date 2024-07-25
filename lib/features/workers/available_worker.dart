@@ -1,9 +1,19 @@
 import 'package:company_application/common/constants/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class AvailableWorkerScreen extends StatelessWidget {
-  const AvailableWorkerScreen({super.key});
+  final Map<String, dynamic> orderDetails;
+  const AvailableWorkerScreen({super.key, required this.orderDetails});
+
+  Future<void> _makePhoneCall(String phoneNumber) async {
+    final Uri launchUri = Uri(
+      scheme: 'tel',
+      path: phoneNumber,
+    );
+    await launchUrl(launchUri);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +37,6 @@ class AvailableWorkerScreen extends StatelessWidget {
           if (snapshot.hasError) {
             print('Error: ${snapshot.error}');
             return Center(child: Text('Error: ${snapshot.error}'));
-          
           }
 
           if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
@@ -48,18 +57,25 @@ class AvailableWorkerScreen extends StatelessWidget {
                       : null,
                 ),
                 title: Text(workerData['name'] ?? 'Unknown'),
-                subtitle: Text(workerData['categories'] ?? 'No categories'),
+                subtitle: Text(
+                  '${workerData['categories'] ?? 'No categories'}\n${workerData['address'] ?? 'No address'}',
+                ),
                 trailing: IconButton(
                   icon: Icon(Icons.phone),
                   onPressed: () {
-                    // Implement call functionality here
-                    // You can use url_launcher package to make a call
-                    // launch("tel:${workerData['contact']}");
+                    if (workerData['contact'] != null) {
+                      _makePhoneCall(workerData['contact']);
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('No contact number available')),
+                      );
+                    }
                   },
                 ),
                 onTap: () {
                   // Implement action when tapping on a worker
                   // For example, show more details or navigate to a detail screen
+                   _showConfirmationDialog(context, workerData, orderDetails);
                 },
               );
             },
@@ -67,5 +83,46 @@ class AvailableWorkerScreen extends StatelessWidget {
         },
       ),
     );
+  }
+   void _showConfirmationDialog(BuildContext context, Map<String, dynamic> workerData, Map<String, dynamic> orderDetails) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Confirm Forward'),
+          content: Text('Are you sure you want to forward this work to ${workerData['name']}?'),
+          actions: <Widget>[
+            TextButton(
+              child: Text('No'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: Text('Yes'),
+              onPressed: () {
+                Navigator.of(context).pop();
+                _forwardOrderToWorker(context, workerData, orderDetails);
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _forwardOrderToWorker(BuildContext context, Map<String, dynamic> workerData, Map<String, dynamic> orderDetails) {
+    FirebaseFirestore.instance.collection('worker_orders').add({
+      'workerId': workerData['userId'],
+      'workerName': workerData['name'],
+      'orderDetails': orderDetails,
+      'forwardedAt': FieldValue.serverTimestamp(),
+      'status': 'forwarded',
+    }).then((_) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Order forwarded to ${workerData['name']}')));
+      Navigator.of(context).pop(); // Go back to the OrderDetailsScreen
+    }).catchError((error) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Failed to forward order: $error')));
+    });
   }
 }

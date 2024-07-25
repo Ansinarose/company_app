@@ -1,6 +1,7 @@
 import 'package:company_application/common/constants/app_button_styles.dart';
 import 'package:company_application/common/constants/app_colors.dart';
 import 'package:company_application/common/constants/app_text_styles.dart';
+import 'package:company_application/features/workers/available_worker.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart'; // For date formatting
@@ -71,8 +72,17 @@ class OrderDetailsScreen extends StatelessWidget {
                 
                     style: AppButtonStyles.smallButton(context),
                     onPressed: () {
-                      // Handle forward logic here
-                     // _handleForward(context);
+                      Navigator.of(context).push(MaterialPageRoute(builder: (context)=> AvailableWorkerScreen(
+                        orderDetails: {
+                           'orderId': order.id,
+                           'userId': order['userId'],
+                          'productTitle': order['productTitle'],
+                          'productPrice': order['productPrice'],
+                          'selectedColor': order['selectedColor'],
+                          'address': order['address'],
+                          'productImage': order['productImage'],
+                        },)));
+                      
                     },
                     child: Text('Forward'),
                   ),
