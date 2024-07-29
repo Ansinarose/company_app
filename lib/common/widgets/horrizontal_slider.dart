@@ -1,3 +1,5 @@
+// ignore_for_file: unused_import, unnecessary_import, unused_local_variable
+
 import 'package:company_application/common/constants/app_colors.dart';
 import 'package:company_application/common/constants/app_text_styles.dart';
 import 'package:company_application/features/notification/views/order_request.dart';

@@ -1,3 +1,5 @@
+// ignore_for_file: unused_import
+
 import 'package:company_application/features/category/views/category_image_details.dart';
 import 'package:company_application/features/category/views/edit_category_screen.dart';
 import 'package:company_application/features/photos/views/category_image.dart';
