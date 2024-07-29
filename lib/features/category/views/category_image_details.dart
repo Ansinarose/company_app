@@ -11,6 +11,7 @@ class CategoryImageDetailPage extends StatelessWidget {
     List<dynamic> additionalImages = categorySet['additionalImages'] ?? [];
 
     return Scaffold(
+      backgroundColor: AppColors.scaffoldBackgroundcolor,
       appBar: AppBar(
         backgroundColor: AppColors.textPrimaryColor,
       //  title: Text(categorySet['title'] ?? 'Category Details'),

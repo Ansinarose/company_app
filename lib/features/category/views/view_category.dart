@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:company_application/common/constants/app_text_styles.dart';
 import 'package:company_application/features/category/views/add_category.dart';
 import 'package:company_application/features/category/views/details_category.dart';
+import 'package:company_application/features/category/views/edit_category_screen.dart';
 import 'package:company_application/features/home/views/home_screen.dart';
 import 'package:company_application/features/services/model/service.dart';
 import 'package:company_application/providers/category_provider.dart';
@@ -86,17 +87,22 @@ class CategoryViewScreen extends StatelessWidget {
                               motion: ScrollMotion(),
                               children: [
                                 SlidableAction(
-                                  onPressed: (context) async {
-                                    final newName = await Dialogs.showEditDialog(context, category['name']);
-                                    if (newName != null) {
-                                      categoryProvider.editCategory(docId, newName);
-                                    }
-                                  },
-                                  backgroundColor: AppColors.textPrimaryColor,
-                                  foregroundColor: Colors.white,
-                                  icon: Icons.edit,
-                                  label: 'Edit',
-                                ),
+  onPressed: (context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => CategoryAddItemScreen(
+          categoryId: docId,
+          categoryName: category['name'],
+        ),
+      ),
+    );
+  },
+  backgroundColor: AppColors.textPrimaryColor,
+  foregroundColor: Colors.white,
+  icon: Icons.add,
+  label: 'Add',
+),
                               ],
                             ),
                             child: GestureDetector(

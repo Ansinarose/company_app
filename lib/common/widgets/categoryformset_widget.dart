@@ -78,7 +78,7 @@ class CategoryFormSetWidget extends StatelessWidget {
               ),
               SizedBox(height: 16.0),
               CustomTextFormField(
-                labelText: 'Price',
+                labelText: 'Material Price for Sq.ft',
                 controller: formSet.priceController,
                 prefixIcon: Icons.attach_money,
                 validator: (value) => value?.isEmpty ?? true ? 'Please enter a price' : null,

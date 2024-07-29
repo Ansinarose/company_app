@@ -203,19 +203,31 @@ class CategoryProvider with ChangeNotifier {
   }
   
 }
+
 class CategoryFormSet {
-  final TextEditingController titleController = TextEditingController();
-  final TextEditingController descriptionController = TextEditingController();
-  final TextEditingController priceController = TextEditingController();
-  final TextEditingController overviewController = TextEditingController();
+  final TextEditingController titleController;
+  final TextEditingController descriptionController; // Add this
+  final TextEditingController priceController;
+  final TextEditingController overviewController;
   final ImageFormModel imageFormModel;
-  CategoryFormSet() : imageFormModel = ImageFormModel();
+
+  CategoryFormSet({
+    TextEditingController? titleController,
+    TextEditingController? descriptionController, // Add this
+    TextEditingController? priceController,
+    TextEditingController? overviewController,
+    ImageFormModel? imageFormModel,
+  }) : 
+    this.titleController = titleController ?? TextEditingController(),
+    this.descriptionController = descriptionController ?? TextEditingController(), // Add this
+    this.priceController = priceController ?? TextEditingController(),
+    this.overviewController = overviewController ?? TextEditingController(),
+    this.imageFormModel = imageFormModel ?? ImageFormModel();
 
   void dispose() {
     titleController.dispose();
-    descriptionController.dispose();
+    descriptionController.dispose(); // Add this
     priceController.dispose();
     overviewController.dispose();
-    imageFormModel.dispose();
   }
 }
