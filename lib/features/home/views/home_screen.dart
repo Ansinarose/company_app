@@ -1,4 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:company_application/features/auth/views/login_screen.dart';
+import 'package:company_application/providers/auth_provider.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -31,6 +33,96 @@ class _HomeScreenState extends State<HomeScreen> {
     _fetchImages();
   }
 
+  
+  @override
+  Widget build(BuildContext context) {
+    final authProvider = Provider.of<AuthProvider>(context);
+    final user = Provider.of<User>(context);
+    double screenHeight = MediaQuery.of(context).size.height;
+
+    return Scaffold(
+      backgroundColor: AppColors.scaffoldBackgroundcolor,
+      appBar: AppBar(
+        automaticallyImplyLeading: true,
+        backgroundColor: AppColors.textPrimaryColor,
+        actions: [
+          IconButton(
+            icon: Icon(Icons.logout),
+            onPressed: () async {
+             // await authProvider.logout();
+              // The navigation will be handled by the main.dart file
+               await Provider.of<AuthProvider>(context, listen: false).logout();
+                Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => LoginPage()));
+            },
+          ),
+          IconButton(
+            onPressed: () {
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) => NotificationScreen()));
+            },
+            icon: Icon(Icons.notification_important, color: AppColors.textsecondaryColor),
+          ),
+        ],
+      ),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              PersonSlider(),
+              SizedBox(height: screenHeight * 0.02),
+              HorizontalSlider(),
+              SizedBox(height: screenHeight * 0.03),
+              ServicesGridWidget(),
+              SizedBox(height: screenHeight * 0.03),
+              WorksFromWorkersWidget(),
+              SizedBox(height: screenHeight * 0.03),
+              Text('Highlights of the day:', style: AppTextStyles.subheading(context)),
+              SizedBox(height: screenHeight * 0.02),
+              Wrap(
+                spacing: 10.0,
+                runSpacing: 10.0,
+                children: [
+                  ..._imageUrls.map((url) => GestureDetector(
+                    onLongPress: () => _showDeleteDialog(url),
+                    child: Container(
+                      width: MediaQuery.of(context).size.width / 3 - 12,
+                      height: MediaQuery.of(context).size.width / 3 - 12,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        image: DecorationImage(
+                          image: NetworkImage(url),
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
+                  )).toList(),
+                  Container(
+                    width: MediaQuery.of(context).size.width / 3 - 12,
+                    height: MediaQuery.of(context).size.width / 3 - 12,
+                    decoration: BoxDecoration(
+                      color: AppColors.textPrimaryColor,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Center(
+                      child: IconButton(
+                        icon: Icon(Icons.add, size: 40, color: AppColors.textsecondaryColor),
+                        onPressed: _pickImage,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+      bottomNavigationBar: CurvedNavBar(
+        selectedIndex: _selectedIndex,
+        onTap: _onNavItemTapped,
+      ),
+    );
+  }
   void _onNavItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
@@ -127,90 +219,4 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  @override
-  Widget build(BuildContext context) {
-    final user = Provider.of<User>(context);
-    double screenHeight = MediaQuery.of(context).size.height;
-
-    return Scaffold(
-      backgroundColor: AppColors.scaffoldBackgroundcolor,
-      appBar: AppBar(
-        automaticallyImplyLeading: true,
-        backgroundColor: AppColors.textPrimaryColor,
-        actions: [
-          IconButton(
-            icon: Icon(Icons.logout),
-            onPressed: () {
-              user.logout();
-              Navigator.pushReplacementNamed(context, '/');
-            },
-          ),
-          IconButton(
-            onPressed: () {
-              Navigator.of(context).push(MaterialPageRoute(builder: (context) => NotificationScreen()));
-            },
-            icon: Icon(Icons.notification_important, color: AppColors.textsecondaryColor),
-          ),
-        ],
-      ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              PersonSlider(),
-              SizedBox(height: screenHeight * 0.02),
-              HorizontalSlider(),
-              SizedBox(height: screenHeight * 0.03),
-              ServicesGridWidget(),
-              SizedBox(height: screenHeight * 0.03),
-              WorksFromWorkersWidget(),
-              SizedBox(height: screenHeight * 0.03),
-              Text('Highlights of the day:', style: AppTextStyles.subheading(context)),
-              SizedBox(height: screenHeight * 0.02),
-              Wrap(
-                spacing: 10.0,
-                runSpacing: 10.0,
-                children: [
-                  ..._imageUrls.map((url) => GestureDetector(
-                    onLongPress: () => _showDeleteDialog(url),
-                    child: Container(
-                      width: MediaQuery.of(context).size.width / 3 - 12,
-                      height: MediaQuery.of(context).size.width / 3 - 12,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        image: DecorationImage(
-                          image: NetworkImage(url),
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    ),
-                  )).toList(),
-                  Container(
-                    width: MediaQuery.of(context).size.width / 3 - 12,
-                    height: MediaQuery.of(context).size.width / 3 - 12,
-                    decoration: BoxDecoration(
-                      color: AppColors.textPrimaryColor,
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: Center(
-                      child: IconButton(
-                        icon: Icon(Icons.add, size: 40, color: AppColors.textsecondaryColor),
-                        onPressed: _pickImage,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
-      ),
-      bottomNavigationBar: CurvedNavBar(
-        selectedIndex: _selectedIndex,
-        onTap: _onNavItemTapped,
-      ),
-    );
-  }
 }

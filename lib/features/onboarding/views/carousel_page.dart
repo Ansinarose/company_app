@@ -3,6 +3,7 @@
 import 'package:company_application/common/constants/app_button_styles.dart';
 import 'package:company_application/common/constants/app_colors.dart';
 import 'package:company_application/common/constants/app_text_styles.dart';
+import 'package:company_application/features/auth/views/login_screen.dart';
 
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -69,7 +70,8 @@ class CarouselPage extends StatelessWidget {
             SizedBox(height: 20), // Add spacing between carousel and button
             TextButton(
               onPressed: () {
-                Navigator.pushNamedAndRemoveUntil(context, '/login', (route) => false);
+               // Navigator.pushNamedAndRemoveUntil(context, '/login', (route) => false);
+               Navigator.of(context).push(MaterialPageRoute(builder: (context)=> LoginPage()));
               },
               child: Text(
                 'Get Started',),

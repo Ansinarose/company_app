@@ -4,6 +4,8 @@ import 'package:company_application/common/constants/app_text_styles.dart';
 import 'package:company_application/common/constants/textform_field.dart';
 import 'package:company_application/common/widgets/curved_appbar.dart';
 import 'package:company_application/features/auth/models/user_model.dart';
+import 'package:company_application/features/home/views/home_screen.dart';
+import 'package:company_application/providers/auth_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart'; // Import provider package
 // Create a user model (see next step)
@@ -65,24 +67,47 @@ final _formKey = GlobalKey<FormState>();
                     ),
                     SizedBox(height: 50,),
                     Center(
-                      child: TextButton(onPressed: (){
-                      if(_formKey.currentState?.validate() ?? false){
-                        String username = usernameController.text.trim();
-                        String password = passwordController.text.trim();
+                      child: 
+                      // TextButton(onPressed: (){
+                      // if(_formKey.currentState?.validate() ?? false){
+                      //   String username = usernameController.text.trim();
+                      //   String password = passwordController.text.trim();
                       
-                        if(username == 'ALFA' && password == '123456'){
-                          Provider.of<User>(context, listen: false).login(username);
-                           Navigator.pushReplacementNamed(context, '/home');
-                                        } else {
-                      // Show an error message (you can use a SnackBar or Dialog)
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('Invalid username or password',
-                        )),
-                      );
-                        }
-                      }
-                      }, child: Text('Login'),
-                      style: AppButtonStyles.largeButton(context),),
+                      //   if(username == 'ALFA' && password == '123456'){
+                      //     Provider.of<User>(context, listen: false).login(username);
+                      //     //  Navigator.pushReplacementNamed(context, '/home');
+                      //     Navigator.of(context).push(MaterialPageRoute(builder: (context)=> HomeScreen()));
+                      //                   } 
+                      //                   else {
+                      // // Show an error message (you can use a SnackBar or Dialog)
+                      // ScaffoldMessenger.of(context).showSnackBar(
+                      //   SnackBar(content: Text('Invalid username or password',
+                      //   )),
+                      // );
+                      //   }
+                      // }
+                      // }, child: Text('Login'),
+                      // style: AppButtonStyles.largeButton(context),),
+                      // In LoginPage class
+ElevatedButton(
+  onPressed: () async {
+    if(_formKey.currentState?.validate() ?? false){
+      String username = usernameController.text.trim();
+      String password = passwordController.text.trim();
+    
+      if(username == 'ALFA' && password == '123456'){
+        await Provider.of<AuthProvider>(context, listen: false).login();
+        Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => HomeScreen()));
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Invalid username or password')),
+        );
+      }
+    }
+  },
+  child: Text('Login'),
+  style: AppButtonStyles.largeButton(context),
+),
                     )
              ],   )
               )

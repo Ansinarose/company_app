@@ -111,7 +111,8 @@ class ServicesGridWidget extends StatelessWidget {
                       width: screenWidth * 0.28,
                       height: screenHeight * 1,
                       decoration: BoxDecoration(
-                        color: Color.fromARGB(255, 2, 107, 6),
+                        //color: Color.fromARGB(255, 2, 107, 6),
+                        color: Colors.black,
                         borderRadius: BorderRadius.circular(15),
                         boxShadow: [
                           BoxShadow(
@@ -149,7 +150,8 @@ class ServicesGridWidget extends StatelessWidget {
                       width: screenWidth * 0.28,
                       height: screenHeight * 1,
                       decoration: BoxDecoration(
-                        color: Color.fromARGB(255, 2, 107, 6),
+                       // color: Color.fromARGB(255, 2, 107, 6),
+                       color: Colors.black,
                         borderRadius: BorderRadius.circular(15),
                         boxShadow: [
                           BoxShadow(

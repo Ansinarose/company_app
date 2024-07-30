@@ -8,7 +8,8 @@ class AppButtonStyles {
 
     return TextButton.styleFrom(
       foregroundColor: AppColors.textsecondaryColor,
-      backgroundColor: Color.fromARGB(255, 10, 58, 29), // Button color
+     // backgroundColor: Color.fromARGB(255, 10, 58, 29), // Button color
+     backgroundColor: Colors.black,
       minimumSize: Size(screenWidth * 0.5, 50), // Button size
       padding: EdgeInsets.symmetric(horizontal: 16.0),
       textStyle: TextStyle(
@@ -30,7 +31,8 @@ class AppButtonStyles {
 
     return TextButton.styleFrom(
       foregroundColor: AppColors.textsecondaryColor,
-      backgroundColor: Color.fromARGB(255, 10, 58, 29), // Button color
+     // backgroundColor: Color.fromARGB(255, 10, 58, 29), // Button color
+     backgroundColor: Colors.black,
       minimumSize: Size(screenWidth * 0.4, 50), // Button size
       padding: EdgeInsets.symmetric(horizontal: 12.0),
       textStyle: TextStyle(
