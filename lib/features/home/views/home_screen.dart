@@ -159,7 +159,7 @@ class _HomeScreenState extends State<HomeScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              PersonSlider(itemCount: 10),
+              PersonSlider(),
               SizedBox(height: screenHeight * 0.02),
               HorizontalSlider(),
               SizedBox(height: screenHeight * 0.03),
