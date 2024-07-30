@@ -1,5 +1,7 @@
 
 
+// ignore_for_file: unused_import
+
 import 'package:company_application/features/auth/views/login_screen.dart';
 import 'package:company_application/features/home/views/home_screen.dart';
 import 'package:company_application/features/onboarding/views/carousel_page.dart';

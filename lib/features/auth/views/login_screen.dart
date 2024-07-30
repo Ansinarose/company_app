@@ -1,3 +1,5 @@
+// ignore_for_file: unused_import
+
 import 'package:company_application/common/constants/app_button_styles.dart';
 import 'package:company_application/common/constants/app_colors.dart';
 import 'package:company_application/common/constants/app_text_styles.dart';
