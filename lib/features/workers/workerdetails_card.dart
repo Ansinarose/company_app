@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:company_application/common/constants/app_button_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:company_application/common/constants/app_colors.dart';
