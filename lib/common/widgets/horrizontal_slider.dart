@@ -2,7 +2,11 @@
 
 import 'package:company_application/common/constants/app_colors.dart';
 import 'package:company_application/common/constants/app_text_styles.dart';
+import 'package:company_application/features/notification/views/notification_screen.dart';
 import 'package:company_application/features/notification/views/order_request.dart';
+import 'package:company_application/features/notification/views/worker_request_notification.dart';
+import 'package:company_application/features/work_overview/completed_works_screen.dart';
+import 'package:company_application/features/work_overview/ongoing_project_screen.dart';
 import 'package:company_application/features/workers/available_worker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -38,26 +42,28 @@ class _HorizontalSliderState extends State<HorizontalSlider> {
           child: PageView(
             controller: _pageController,
             children: [
-              _buildSliderCard('New Order', () {
-              // Navigator.of(context).push(MaterialPageRoute(builder: (context)=> NewOrdersList()));
-                print('New Order tapped');
-              }),
+               _buildSliderCard('New Order', () {
+                       Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => NewOrdersList(),
+      ),
+    );
+  }),
               _buildSliderCard('Ongoing Project', () {
-                // Handle on tap for 'Ongoing Project'
-                print('Ongoing Project tapped');
+                Navigator.of(context).push(MaterialPageRoute(builder: (context) => OngoingProjectsScreen()));
               }),
-              _buildSliderCard('Completed Works', () {
-                // Handle on tap for 'Completed Works'
-                print('Completed Works tapped');
+               _buildSliderCard('Completed Works', () {
+                Navigator.of(context).push(MaterialPageRoute(builder: (context) => CompletedWorksScreen()));
               }),
               _buildSliderCard('Recent Payments', () {
                 // Handle on tap for 'Recent Payments'
                 print('Recent Payments tapped');
               }),
               _buildSliderCard('New Worker Alert', () {
-                // Handle on tap for 'New Worker Alert'
-                print('New Worker Alert tapped');
-              }),
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => WorkerRequestList(),
+                             ),
+    );
+  }),
               _buildSliderCard('Total Available Workers', () {
                 Navigator.of(context).push(MaterialPageRoute(builder: (context)=> AvailableWorkerScreen(orderDetails: {},)));
                 print('Total Available Workers tapped');

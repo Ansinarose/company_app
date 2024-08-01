@@ -1,8 +1,13 @@
+// ignore_for_file: unused_import
+
 import 'dart:async';
 import 'package:company_application/common/constants/app_colors.dart';
-
+import 'package:company_application/features/auth/views/login_screen.dart';
+import 'package:company_application/features/home/views/home_screen.dart';
 import 'package:company_application/features/onboarding/views/carousel_page.dart';
+import 'package:company_application/providers/auth_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 
 class SplashScreen extends StatefulWidget {
@@ -15,11 +20,24 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
  
-    Timer(Duration(seconds: 3), () {
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) => CarouselPage()),
-      );
+   Timer(Duration(seconds: 3), () {
+      checkLoginStatus();
     });
+  }
+
+  void checkLoginStatus() async {
+    final authProvider = Provider.of<AuthProvider>(context, listen: false);
+    await authProvider.checkLoginStatus();
+
+    if (authProvider.isLoggedIn) {
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (context) => HomeScreen()),
+      );
+    } else {
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (context) => LoginPage()),
+      );
+    }
   }
 
   @override

@@ -1,5 +1,9 @@
 import 'package:company_application/common/constants/app_colors.dart';
+import 'package:company_application/common/constants/app_text_styles.dart';
+import 'package:company_application/features/auth/views/login_screen.dart';
+import 'package:company_application/providers/auth_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class SettingsPage extends StatelessWidget {
   @override
@@ -64,7 +68,7 @@ class SettingsPage extends StatelessWidget {
             leading: Icon(Icons.logout),
             title: Text('Logout'),
             onTap: () {
-              // Handle logout logic here
+             
               _handleLogout(context);
             },
           ),
@@ -73,10 +77,32 @@ class SettingsPage extends StatelessWidget {
     );
   }
 
-  void _handleLogout(BuildContext context) {
-    // Implement logout logic
-    // For example:
-    // AuthService.logout();
-    Navigator.of(context).popUntil((route) => route.isFirst); // Go back to the login screen
-  }
+ void _handleLogout(BuildContext context) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text("Logout Confirmation",style: AppTextStyles.subheading(context),),
+        content: Text("Are you sure you want to logout?",style: AppTextStyles.body(context),),
+        actions: <Widget>[
+          TextButton(
+            child: Text("Cancel",style: AppTextStyles.body(context),),
+            onPressed: () {
+              Navigator.of(context).pop(); // Close the dialog
+            },
+          ),
+          TextButton(
+            child: Text("Confirm",style: AppTextStyles.body(context),),
+            onPressed: () async {
+              Navigator.of(context).pop(); // Close the dialog
+              await Provider.of<AuthProvider>(context, listen: false).logout();
+              Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => LoginPage()));
+            },
+          ),
+        ],
+      );
+    },
+  );
+}
+
 }

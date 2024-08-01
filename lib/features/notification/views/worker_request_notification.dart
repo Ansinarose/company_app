@@ -1,4 +1,5 @@
 
+import 'package:company_application/common/constants/app_colors.dart';
 import 'package:company_application/common/constants/app_text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -13,7 +14,12 @@ class WorkerRequestList extends StatefulWidget {
 class _WorkerRequestListState extends State<WorkerRequestList> {
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<QuerySnapshot>(
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Worker Requests'),
+        backgroundColor: AppColors.textPrimaryColor,
+      ),
+    body:  StreamBuilder<QuerySnapshot>(
       stream: FirebaseFirestore.instance.collection('workers_request').snapshots(),
       builder: (context, snapshot) {
         if (snapshot.hasError) {
@@ -122,8 +128,8 @@ class _WorkerRequestListState extends State<WorkerRequestList> {
           }).toList(),
         );
       },
-    );
-  }
+    )
+  );}
 
   Future<void> _deleteWorkerRequest(String workerId) async {
     try {
