@@ -1,5 +1,7 @@
-// ignore_for_file: unused_element
+// ignore_for_file: unused_element, unused_import
 
+import 'package:company_application/features/chat/views/chat_list_screen.dart';
+import 'package:company_application/features/chat/views/chat_screen.dart';
 import 'package:company_application/features/settings/settings_screen.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
@@ -19,13 +21,16 @@ class CurvedNavBar extends StatelessWidget {
     onTap(index);
     switch (index) {
       case 0:
-        // Navigate to Home
-        // Navigator.pushNamed(context, '/home');
+      Navigator.pushNamed(context, '/home');
         break;
-      case 1:
-        // Navigate to Shopping Cart
-        // Navigator.pushNamed(context, '/cart');
-        break;
+      // In BottomNavigationWidget
+ case 1:
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => ChatListScreen()),
+            );
+            break;
+  
       case 2:
         // Navigate to Payment
         // Navigator.pushNamed(context, '/payment');
