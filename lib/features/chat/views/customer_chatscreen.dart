@@ -1,23 +1,29 @@
+// lib/features/chat/views/company_customer_chat_screen.dart
+
+import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:company_application/common/constants/app_colors.dart';
 import 'package:company_application/common/constants/app_id.dart';
 import 'package:company_application/common/constants/app_text_styles.dart';
 import 'package:company_application/features/chat/model/chat_model.dart';
 import 'package:company_application/utils/dateformat.dart';
-import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
-class ChatScreen extends StatefulWidget {
+class CompanyCustomerChatScreen extends StatefulWidget {
   final String chatRoomId;
-  final String workerId;
-  final String workerName;
+  final String customerId;
+  final String customerName;
 
-  ChatScreen({required this.chatRoomId, required this.workerId, required this.workerName});
+  CompanyCustomerChatScreen({
+    required this.chatRoomId,
+    required this.customerId,
+    required this.customerName,
+  });
 
   @override
-  _ChatScreenState createState() => _ChatScreenState();
+  _CompanyCustomerChatScreenState createState() => _CompanyCustomerChatScreenState();
 }
 
-class _ChatScreenState extends State<ChatScreen> {
+class _CompanyCustomerChatScreenState extends State<CompanyCustomerChatScreen> {
   final TextEditingController _messageController = TextEditingController();
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   late Stream<QuerySnapshot> _messagesStream;
@@ -30,7 +36,7 @@ class _ChatScreenState extends State<ChatScreen> {
 
   void _initializeMessagesStream() {
     _messagesStream = _firestore
-        .collection('chatRooms')
+        .collection('chats')
         .doc(widget.chatRoomId)
         .collection('messages')
         .orderBy('timestamp', descending: true)
@@ -39,12 +45,12 @@ class _ChatScreenState extends State<ChatScreen> {
 
   void _sendMessage() async {
     if (_messageController.text.isNotEmpty) {
-      await _firestore.collection('chatRooms').doc(widget.chatRoomId).collection('messages').add({
+      await _firestore.collection('chats').doc(widget.chatRoomId).collection('messages').add({
         'senderId': AppConstants.COMPANY_ID,
         'content': _messageController.text,
         'timestamp': FieldValue.serverTimestamp(),
       });
-      await _firestore.collection('chatRooms').doc(widget.chatRoomId).update({
+      await _firestore.collection('chats').doc(widget.chatRoomId).update({
         'lastMessageTimestamp': FieldValue.serverTimestamp(),
       });
       _messageController.clear();
@@ -55,8 +61,10 @@ class _ChatScreenState extends State<ChatScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.scaffoldBackgroundcolor,
-      appBar: AppBar(backgroundColor: AppColors.textPrimaryColor,
-        title: Text('${widget.workerName}',style: AppTextStyles.whiteBody(context),)),
+      appBar: AppBar(
+        backgroundColor: AppColors.textPrimaryColor,
+        title: Text('Chat with ${widget.customerName}', style: AppTextStyles.whiteBody(context)),
+      ),
       body: Column(
         children: [
           Expanded(
@@ -88,7 +96,7 @@ class _ChatScreenState extends State<ChatScreen> {
                         margin: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
                         padding: EdgeInsets.all(10),
                         decoration: BoxDecoration(
-                          color: isMe ? Colors.grey[300] : Colors.grey[300],
+                          color: isMe ? Colors.blue[100] : Colors.grey[300],
                           borderRadius: BorderRadius.circular(15),
                         ),
                         child: Column(
@@ -125,11 +133,13 @@ class _ChatScreenState extends State<ChatScreen> {
                   ),
                 ),
                 SizedBox(width: 10),
-                Container(decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: AppColors.textPrimaryColor),
+                Container(
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: AppColors.textPrimaryColor
+                  ),
                   child: IconButton(
-                    icon: Icon(Icons.send),
+                    icon: Icon(Icons.send, color: Colors.white),
                     onPressed: _sendMessage,
                   ),
                 ),
