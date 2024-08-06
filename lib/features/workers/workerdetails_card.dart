@@ -1,6 +1,7 @@
 // ignore_for_file: deprecated_member_use
 
 import 'package:company_application/common/constants/app_button_styles.dart';
+import 'package:company_application/features/payment/views/payment_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:company_application/common/constants/app_colors.dart';
 import 'package:company_application/common/constants/app_text_styles.dart';
@@ -12,20 +13,14 @@ class WorkerDetailsCard extends StatelessWidget {
 
   const WorkerDetailsCard({Key? key, required this.worker}) : super(key: key);
 
-  void _launchCaller(String number) async {
-    final url = 'tel:$number';
-    if (await canLaunch(url)) {
-      await launch(url);
-    } else {
-      throw 'Could not launch $url';
-    }
-  }
-
+  
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.scaffoldBackgroundcolor,
       appBar: AppBar(
-        title: Text('Worker Details'),
+       // title: Text('Worker Details'),
         backgroundColor: AppColors.textPrimaryColor,
       ),
       body: FutureBuilder<DocumentSnapshot>(
@@ -92,7 +87,15 @@ class WorkerDetailsCard extends StatelessWidget {
                       ElevatedButton(
                         onPressed: () => _launchCaller(worker['contact'] ?? ''),
                         child: Text('Call Worker'),
-                        style: AppButtonStyles.smallButton(context))
+                        style: AppButtonStyles.smallButton(context),
+                      ),
+                      SizedBox(height: 30),
+                      TextButton(
+                        onPressed: () {
+                          _showConfirmationDialog(context);
+                        },
+                        child: Text('Pay Now', style: AppTextStyles.subheading(context)),
+                      ),
                     ],
                   ),
                 ),
@@ -103,4 +106,43 @@ class WorkerDetailsCard extends StatelessWidget {
       ),
     );
   }
+  void _showConfirmationDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Confirm Payment',style: AppTextStyles.subheading(context),),
+          content: Text('Are you sure you haven\'t already paid this worker for this month?',style: AppTextStyles.body(context),),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Dismiss the dialog
+              },
+              child: Text('Cancel',style: AppTextStyles.body(context),),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Dismiss the dialog
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => PaymentsScreen(workerId: worker['userId']),
+                  ),
+                );
+              },
+              child: Text('Confirm',style: AppTextStyles.body(context),),
+            ),
+          ],
+        );
+      },
+    );
+  }
+void _launchCaller(String number) async {
+    final url = 'tel:$number';
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
+
 }

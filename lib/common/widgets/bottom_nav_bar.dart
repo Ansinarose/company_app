@@ -2,6 +2,8 @@
 
 import 'package:company_application/features/chat/views/chat_list_screen.dart';
 import 'package:company_application/features/chat/views/worker_chatscreen.dart';
+import 'package:company_application/features/payment/views/payment_list_screen.dart';
+import 'package:company_application/features/payment/views/payment_screen.dart';
 import 'package:company_application/features/settings/settings_screen.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
@@ -32,8 +34,7 @@ class CurvedNavBar extends StatelessWidget {
             break;
   
       case 2:
-        // Navigate to Payment
-        // Navigator.pushNamed(context, '/payment');
+       Navigator.of(context).push(MaterialPageRoute(builder: (context) => PaymentListScreen()));
         break;
       case 3:
         // Navigate to Settings
